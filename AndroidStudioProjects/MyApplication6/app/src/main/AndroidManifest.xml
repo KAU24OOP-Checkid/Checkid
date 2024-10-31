@@ -1,0 +1,71 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!-- 상단 디바이스 정보 -->
+    <TextView
+        android:id="@+id/deviceInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00의 Note9"
+        android:textSize="18sp"
+        android:padding="16dp" />
+
+    <!-- 사용 시간 Progress Bar -->
+    <ProgressBar
+        android:id="@+id/usageProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="50"
+        android:max="100" />
+
+    <!-- 카테고리 사용 시간 표시 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Games 1h 50m" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entertainment 45m" />
+        <!-- 필요한 카테고리 추가 -->
+    </LinearLayout>
+
+    <!-- 달력, 통계 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/calendarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="달력" />
+
+        <Button
+            android:id="@+id/statisticsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="통계" />
+    </LinearLayout>
+
+    <!-- 하단 네비게이션 바 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:menu="@menu/bottom_navigation_menu" />
+
+</LinearLayout>
