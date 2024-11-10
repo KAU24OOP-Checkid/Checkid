@@ -7,22 +7,24 @@
 
     <ImageView
         android:id="@+id/icon_notification_type"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+        app:srcCompat="@drawable/ic_notification_system" />
 
     <TextView
         android:id="@+id/txt_notification_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
         android:text="@string/Notification_title"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/icon_notification_type"
@@ -32,11 +34,21 @@
         android:id="@+id/txt_notification_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="#FFFFFF"
         android:text="@string/Notification_content"
+        app:layout_constraintStart_toEndOf="@+id/icon_notification_type"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notification_title" />
+
+    <ImageButton
+        android:id="@+id/list_notification_imagebutton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="40dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
-        app:layout_constraintStart_toEndOf="@+id/icon_notification_type"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        app:srcCompat="@drawable/ic_more_vert" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

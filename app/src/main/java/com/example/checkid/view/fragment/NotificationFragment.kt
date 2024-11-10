@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkid.R
 import com.example.checkid.databinding.FragmentNotificationBinding
 import com.example.checkid.databinding.ListNotificationBinding
 import com.example.checkid.model.Notification
 import com.example.checkid.model.NotificationRepository.notifications
+import com.example.checkid.model.NotificationType
 
 class NotificationFragment() : Fragment() {
     private var _binding : FragmentNotificationBinding? = null
@@ -45,6 +47,13 @@ class NotificationAdapter(private val notifications: List<Notification>) :
 
     class ViewHolder(private val binding: ListNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(notification: Notification) {
+
+            when (notification.notificationType) {
+                NotificationType.REPORT -> binding.iconNotificationType.setImageResource(R.drawable.ic_notification_report)
+                NotificationType.WARNING -> binding.iconNotificationType.setImageResource(R.drawable.ic_notification_warning)
+                else -> binding.iconNotificationType.setImageResource(R.drawable.ic_notification_system)
+            }
+
             binding.txtNotificationTitle.text = notification.textTitle
             binding.txtNotificationContent.text = notification.textContent
         }

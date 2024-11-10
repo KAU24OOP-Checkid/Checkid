@@ -1,7 +1,10 @@
 package com.example.checkid.model
 /*
-앱 사용 통계를 처리하는 Fragment로, 사용자가 자신의 앱 사용 정보를 확인할 수 있도록 도와주는 역할을 합니다.
-이 클래스는 주로 권한 체크와 사용 통계 가져오기 기능을 담당합니다.
+역할: UI 요소를 포함한 Fragment로, 특정 사용자 인터페이스 기능을 구현하는 데 사용된다.
+기능:
+Fragment가 생성될 때 onViewCreated 메소드에서 권한을 확인하고, 사용 시간이 필요할 경우 적절한 메소드를 호출한다.
+Fragment를 사용하면 UI의 특정 부분만 갱신할 수 있어 효율적이다.
+getAppUsageTime()와 isUsagePermissionGranted(), requestUsagePermission() 메소드를 통해 앱 사용 통계를 요청하고, 권한을 체크하며, 권한 요청을 위한 Intent를 실행한다.
 */
 import android.app.AppOpsManager
 import android.app.usage.UsageStatsManager
@@ -12,7 +15,7 @@ import androidx.fragment.app.Fragment
 import android.content.Intent
 import android.provider.Settings
 
-class Statistics : Fragment() {
+class sageStatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
