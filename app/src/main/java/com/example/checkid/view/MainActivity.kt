@@ -21,13 +21,13 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(EmptyFragment())
 
         binding.bottomNavigationMenu.setOnItemSelectedListener {
-                item -> when (item.itemId) {
-            R.id.page_home -> replaceFragment(EmptyFragment())
-            R.id.page_statistics -> replaceFragment(EmptyFragment())
-            R.id.page_notification -> replaceFragment(NotificationFragment())
-            R.id.page_setting -> replaceFragment(EmptyFragment())
-            else -> false
-        }
+            item -> when (item.itemId) {
+                R.id.page_home -> replaceFragment(EmptyFragment())
+                R.id.page_statistics -> replaceFragment(EmptyFragment())
+                R.id.page_notification -> replaceFragment(NotificationFragment())
+                R.id.page_setting -> replaceFragment(EmptyFragment())
+                else -> false
+            }
         }
     }
 
