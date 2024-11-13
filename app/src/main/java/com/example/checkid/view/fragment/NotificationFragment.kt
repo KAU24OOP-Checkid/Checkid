@@ -11,6 +11,7 @@ import com.example.checkid.R
 import com.example.checkid.databinding.FragmentNotificationBinding
 import com.example.checkid.databinding.ListNotificationBinding
 import com.example.checkid.model.Notification
+import com.example.checkid.model.NotificationRepository.deleteNotification
 import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
 

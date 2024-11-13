@@ -57,13 +57,14 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_notification_title" />
 
     <ImageButton
-        android:id="@+id/list_notification_imagebutton"
+        android:id="@+id/listNotificationDeleteButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/list_notification_speech_bubble"
         app:layout_constraintTop_toTopOf="@+id/list_notification_speech_bubble"
-        app:srcCompat="@drawable/ic_more_vert" />
+        app:srcCompat="@drawable/ic_notification_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
