@@ -69,7 +69,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.firebase.firestore.ktx)
-
+    // 안드로이드 지도 의존성
+    implementation("com.google.android.gms:play-services-maps:17.0.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,9 +86,6 @@ dependencies {
     // BottomAppBar 관련 dependency
     implementation(libs.androidx.material3)
 
-    //지도sdk 의존성
-    implementation(libs.naver.maps)
-
 }
 
 // build.gradle.kts (프로젝트 레벨)
@@ -96,12 +94,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        // Naver Maven 저장소 추가
-        maven {
-            url = uri("https://naver.jfrog.io/artifactory/maven/")
-        }
+
     }
-    // ...
+
 }
 
 

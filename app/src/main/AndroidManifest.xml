@@ -14,9 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Checkid"
         tools:targetApi="31">
+
+        <!-- 구글 지도 api키 -->
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="n9on65feaa" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC8sVQAsyI21441JiupKCvs0ES24e9eP6c"/>
+
 
         <activity
             android:name=".view.MainActivity"
@@ -25,7 +28,6 @@
             android:theme="@style/Theme.Checkid">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
