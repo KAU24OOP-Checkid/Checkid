@@ -18,4 +18,8 @@ object NotificationRepository {
         add(Notification(NotificationType.WARNING, "11"))
         add(Notification(NotificationType.SYSTEM, "12"))
     }
+
+    fun deleteNotification(index: Int) {
+        notifications.removeAt(index)
+    }
 }

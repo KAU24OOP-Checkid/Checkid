@@ -4,24 +4,24 @@
     <item
         android:id="@+id/page_home"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_report"
         android:title="@string/bottom_navigation_view_button1"/>
 
     <item
         android:id="@+id/page_statistics"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_statistics"
         android:title="@string/bottom_navigation_view_button2"/>
 
     <item
         android:id="@+id/page_notification"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_notifications"
         android:title="@string/bottom_navigation_view_button3"/>
 
     <item
         android:id="@+id/page_setting"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_settings"
         android:title="@string/bottom_navigation_view_button4"/>
 </menu>
