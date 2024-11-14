@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
+import com.example.checkid.google_map
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
-import com.naver.maps.map.MapFragment
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -39,24 +40,4 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-
-    /*
-    private fun showMap() {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        var mapFragment = fragmentManager.findFragmentById(R.id.map_fragment) as? MapFragment
-
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance()
-            fragmentManager.beginTransaction()
-                .replace(R.id. mapFragment)
-                .commit()
-        }
-
-        findViewById<View>(R.id.map_fragment).visibility = View.VISIBLE
-
-        mapFragment.getMapAsync { naverMap ->
-            // 필요 시 지도 설정 코드
-        }
-
-     */
 }
