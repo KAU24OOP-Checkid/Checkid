@@ -13,4 +13,3 @@ private fun sendUsageTimeToFirebase(appName: String, usageTime: Long) {
 }
 
  */
-g
