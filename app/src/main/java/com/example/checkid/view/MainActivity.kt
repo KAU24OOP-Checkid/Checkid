@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
-import com.example.checkid.google_map
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
-import android.view.View
+import com.example.yourpackage.SettingsFragment
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.page_home -> replaceFragment(EmptyFragment())
                 R.id.page_statistics -> replaceFragment(EmptyFragment())
                 R.id.page_notification -> replaceFragment(NotificationFragment())
-                R.id.page_setting -> replaceFragment(EmptyFragment())
+                R.id.page_setting -> replaceFragment(SettingsFragment())
                 else -> false
             }
         }

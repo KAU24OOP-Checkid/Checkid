@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 설정 UI를 정의하는 XML파일  -->
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="지도">
+        <Preference
+            android:key="open_map"
+            android:title="자녀 위치 확인"
+            android:summary="Google Maps로 이동합니다." />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="알림 설정">
+
+        <!-- 토글 스위치를 제공 -->
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="푸시 알림"
+            android:summary="푸시 알림을 켜거나 끕니다."
+            android:defaultValue="true" />
+
+        <!-- 드롭다운 리스트 제공 -->
+        <ListPreference
+            android:key="ringtone"
+            android:title="알림음"
+            android:summary="알림음을 선택하세요."
+            android:entries="@array/ringtone_entries"
+            android:entryValues="@array/ringtone_values"
+            android:defaultValue="default_ringtone" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="추후 수정1">
+        <Preference
+            android:key="guest1"
+            android:title="설정1"
+            android:summary="추가 설정." />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="추후 수정2">
+        <Preference
+            android:key="guest2"
+            android:title="설정2"
+            android:summary="추가 설정." />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="추후 수정3">
+        <Preference
+            android:key="guest3"
+            android:title="설정3"
+            android:summary="추가 설정." />
+    </PreferenceCategory>
+
+
+</androidx.preference.PreferenceScreen>
+
