@@ -7,7 +7,8 @@ import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
-import com.example.yourpackage.SettingsFragment
+import com.example.checkid.view.SettingsFragment
+
 
 
 class MainActivity : AppCompatActivity() {

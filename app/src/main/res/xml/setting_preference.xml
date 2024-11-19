@@ -29,25 +29,32 @@
             android:defaultValue="default_ringtone" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="추후 수정1">
+    <PreferenceCategory android:title="사용자 정보">
         <Preference
-            android:key="guest1"
-            android:title="설정1"
-            android:summary="추가 설정." />
+            android:key="user_id"
+            android:title="아이디"
+            android:summary="연결된 ID를 확인합니다." />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="추후 수정2">
+    <PreferenceCategory android:title="공지사항">
         <Preference
-            android:key="guest2"
-            android:title="설정2"
-            android:summary="추가 설정." />
+            android:key="announcement"
+            android:title="공지 사항"
+            android:summary="공지 사항을 확인합니다." />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="추후 수정3">
+    <PreferenceCategory android:title="도움말">
         <Preference
-            android:key="guest3"
-            android:title="설정3"
-            android:summary="추가 설정." />
+            android:key="help"
+            android:title="도움말"
+            android:summary="" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="버전 변경사항">
+        <Preference
+            android:key="version_add"
+            android:title="버전 변경사항"
+            android:summary="" />
     </PreferenceCategory>
 
 
