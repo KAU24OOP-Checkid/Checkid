@@ -11,11 +11,11 @@ import com.example.checkid.R
 import com.example.checkid.databinding.FragmentNotificationBinding
 import com.example.checkid.databinding.ListNotificationBinding
 import com.example.checkid.model.Notification
-import com.example.checkid.model.NotificationRepository.deleteNotification
 import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
+import com.example.checkid.viewmodel.NotificationViewModel
 
-class NotificationFragment() : Fragment() {
+class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private var _binding : FragmentNotificationBinding? = null
     private val binding get() = _binding!!
 
@@ -66,6 +66,21 @@ class NotificationAdapter(private val notifications: List<Notification>) :
             parent,
             false
         )
+
+        binding.listNotificationDeleteButton.setOnClickListener {
+            // model 관련 로직
+            // NotificationViewModel.deleteNotificationInstance(0)
+
+            // view 갱신 관련 로직
+
+        }
+
+        binding.listNotificationSpeechBubble.setOnClickListener {
+            // model 관련 로직
+
+            // view 갱신 관련 로직
+        }
+
         return ViewHolder(binding)
     }
 

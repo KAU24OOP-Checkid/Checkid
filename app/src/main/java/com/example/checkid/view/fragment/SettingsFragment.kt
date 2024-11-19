@@ -7,13 +7,11 @@ import com.example.checkid.MapsActivity
 import com.example.checkid.R
 import android.content.Intent
 
-
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         setPreferencesFromResource(R.xml.setting_preference, rootKey)
     }
-
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         when (preference.key) {
