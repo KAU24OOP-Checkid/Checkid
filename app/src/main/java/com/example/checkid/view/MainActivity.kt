@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
-import com.example.checkid.google_map
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
-import android.view.View
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

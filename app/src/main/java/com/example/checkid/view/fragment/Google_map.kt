@@ -1,4 +1,4 @@
-package com.example.checkid
+package com.example.checkid.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
