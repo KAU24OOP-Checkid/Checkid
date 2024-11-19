@@ -1,7 +1,7 @@
 package com.example.checkid.model
 
 object NotificationRepository {
-    val notifications = ArrayList<Notification>().apply {
+    var notifications = ArrayList<Notification>().apply {
         add(Notification(NotificationType.REPORT, "1"))
         add(Notification(NotificationType.WARNING, "2"))
         add(Notification(NotificationType.SYSTEM, "3"))

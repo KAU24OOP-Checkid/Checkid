@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkid.R
@@ -15,9 +17,12 @@ import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
 import com.example.checkid.viewmodel.NotificationViewModel
 
+
 class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private var _binding : FragmentNotificationBinding? = null
     private val binding get() = _binding!!
+
+    lateinit var viewModel: NotificationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,29 +30,43 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val adapter = NotificationAdapter(notifications)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.recNotify.apply {
-            layoutManager = LinearLayoutManager(context)
-            this.adapter = adapter
-        }
-
-        val view = binding.root
-        return view
+        setupRecyclerView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun setupRecyclerView() {
+        val adapter = NotificationAdapter(notifications,
+            onDeleteClick = { position ->
+                viewModel.deleteNotificationInstance(position)
+            }
+        )
+
+        binding.recNotify.layoutManager = LinearLayoutManager(requireContext())
+        binding.recNotify.adapter = adapter
+    }
 }
 
-class NotificationAdapter(private val notifications: List<Notification>) :
-    RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+class NotificationAdapter(
+    private val notifications: List<Notification>,
+    private val onDeleteClick: (Int) -> Unit
+): RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ListNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(notification: Notification) {
+        fun bind(
+            notification: Notification,
+            position: Int,
+            onDeleteClick: (Int) -> Unit
+        ) {
 
             when (notification.notificationType) {
                 NotificationType.REPORT -> binding.iconNotificationType.setImageResource(R.drawable.ic_notification_report)
@@ -57,6 +76,14 @@ class NotificationAdapter(private val notifications: List<Notification>) :
 
             binding.txtNotificationTitle.text = notification.textTitle
             binding.txtNotificationContent.text = notification.textContent
+
+            binding.listNotificationDeleteButton.setOnClickListener {
+                onDeleteClick(position)
+            }
+
+            // binding.listNotificationSpeechBubble.setOnClickListener {
+            //
+            // }
         }
     }
 
@@ -67,25 +94,11 @@ class NotificationAdapter(private val notifications: List<Notification>) :
             false
         )
 
-        binding.listNotificationDeleteButton.setOnClickListener {
-            // model 관련 로직
-            // NotificationViewModel.deleteNotificationInstance(0)
-
-            // view 갱신 관련 로직
-
-        }
-
-        binding.listNotificationSpeechBubble.setOnClickListener {
-            // model 관련 로직
-
-            // view 갱신 관련 로직
-        }
-
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(notifications[position])
+        holder.bind(notifications[position], position, onDeleteClick)
     }
 
     override fun getItemCount() = notifications.size
