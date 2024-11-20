@@ -51,8 +51,10 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
             }
         )
 
-        binding.recNotify.layoutManager = LinearLayoutManager(requireContext())
-        binding.recNotify.adapter = adapter
+        binding.recNotify.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapter
+        }
     }
 
     private fun observeViewModel() {
@@ -87,9 +89,11 @@ class NotificationAdapter(
                 onDeleteClick(position)
             }
 
-            // binding.listNotificationSpeechBubble.setOnClickListener {
-            //
-            // }
+            /*
+            binding.listNotificationSpeechBubble.setOnClickListener {
+
+            }
+            */
         }
     }
 
@@ -111,6 +115,6 @@ class NotificationAdapter(
 
     fun updateData(newNotifications: List<Notification>) {
         notifications = newNotifications
-        notifyDataSetChanged() // RecyclerView를 갱신하여 UI를 업데이트
+        notifyDataSetChanged()
     }
 }
