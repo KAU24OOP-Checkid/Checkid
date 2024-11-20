@@ -17,12 +17,11 @@ import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
 import com.example.checkid.viewmodel.NotificationViewModel
 
-
 class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private var _binding : FragmentNotificationBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var viewModel: NotificationViewModel
+    private val viewModel: NotificationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +36,7 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        observeViewModel()
     }
 
     override fun onDestroyView() {
@@ -54,10 +54,16 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
         binding.recNotify.layoutManager = LinearLayoutManager(requireContext())
         binding.recNotify.adapter = adapter
     }
+
+    private fun observeViewModel() {
+        viewModel.notifications.observe(viewLifecycleOwner) { updateNotifications ->
+            (binding.recNotify.adapter as NotificationAdapter).updateData(updateNotifications)
+        }
+    }
 }
 
 class NotificationAdapter(
-    private val notifications: List<Notification>,
+    private var notifications: List<Notification>,
     private val onDeleteClick: (Int) -> Unit
 ): RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
@@ -102,4 +108,9 @@ class NotificationAdapter(
     }
 
     override fun getItemCount() = notifications.size
+
+    fun updateData(newNotifications: List<Notification>) {
+        notifications = newNotifications
+        notifyDataSetChanged() // RecyclerView를 갱신하여 UI를 업데이트
+    }
 }
