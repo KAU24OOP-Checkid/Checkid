@@ -14,14 +14,6 @@ class ChildUser(id: String, pw: String) : User(id, pw) {
     var parent: ParentUser? = null
     var applicationList: MutableList<UsageStatsAdapter> = mutableListOf()  // 자녀가 사용하는 애플리케이션 리스트
     var totalUsageTime: Long = 0 // 총 사용 시간 (초 단위)
-/*
-    // 자식의 앱 사용 시간 계산
-    fun addUsage(appName: String, usageTime: Long) {
-        applicationList.add(UsageStatsAdapter(appName, usageTime))
-        totalUsageTime += usageTime
-    }
-
- */
 }
 
 class ParentUser(id: String, pw: String) : User(id, pw) {
