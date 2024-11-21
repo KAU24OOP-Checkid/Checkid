@@ -18,6 +18,7 @@ appcompat = "1.7.0"
 firebaseFirestoreKtx = "25.1.1"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "19.0.0"
+preferenceKtx = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +48,7 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 #네이버 관련 lib
 naver-maps = "com.naver.maps:map-sdk:3.19.1"
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

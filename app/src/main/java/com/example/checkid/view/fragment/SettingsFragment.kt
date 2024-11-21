@@ -1,4 +1,4 @@
-package com.example.checkid.view
+package com.example.yourpackage
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -19,6 +19,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val userIds = mutableListOf("abcd@abc.com", "adsf@asdf.com") // 초기 예제 데이터
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+
         setPreferencesFromResource(R.xml.setting_preference, rootKey)
 
         // "user_id" Preference를 찾기
