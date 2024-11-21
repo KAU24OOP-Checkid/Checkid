@@ -1,17 +1,15 @@
-package com.example.yourpackage
+package com.example.checkid.view.fragment
 
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.example.checkid.MapsActivity
+import com.example.checkid.view.MapsActivity
 import com.example.checkid.R
 import android.content.Context
 import android.widget.EditText
 import android.widget.LinearLayout
-
-
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

@@ -1,7 +1,8 @@
-package com.example.checkid
+package com.example.checkid.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.checkid.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

@@ -9,7 +9,7 @@ import com.example.checkid.databinding.ActivityMainBinding
 import com.example.checkid.model.NotificationChannelManager.createNotificationChannel
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
-import com.example.checkid.view.SettingsFragment
+import com.example.checkid.view.fragment.SettingsFragment
 
 
 class MainActivity : AppCompatActivity() {
