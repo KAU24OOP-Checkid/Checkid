@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.checkid.model.Notification
 import com.example.checkid.model.NotificationRepository
 import com.example.checkid.model.NotificationRepository.deleteNotification
-import com.example.checkid.model.NotificationRepository.notifications
 
 class NotificationViewModel(): ViewModel() {
     private val _notifications = MutableLiveData<List<Notification>>()

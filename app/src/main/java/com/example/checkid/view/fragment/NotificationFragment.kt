@@ -58,8 +58,8 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     }
 
     private fun observeViewModel() {
-        viewModel.notifications.observe(viewLifecycleOwner) { updateNotifications ->
-            (binding.recNotify.adapter as NotificationAdapter).updateData(updateNotifications)
+        viewModel.notifications.observe(viewLifecycleOwner) { notifications ->
+            (binding.recNotify.adapter as NotificationAdapter).updateData(notifications)
         }
     }
 }

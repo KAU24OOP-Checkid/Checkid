@@ -89,7 +89,7 @@ object NotificationChannelManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        addNotification(notification)
+        addNotification(notification) // 'viewModelInstance' 는 어떻게 가져오지?
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
