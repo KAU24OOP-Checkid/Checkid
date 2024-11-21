@@ -57,6 +57,10 @@ android {
 }
 
 dependencies {
+
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")//그래프의존성
+    implementation ("com.google.android.material:material:1.8.0") //색상
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
