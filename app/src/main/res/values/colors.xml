@@ -10,4 +10,8 @@
 
     <color name="Checkid_Yellow">#FFE16F</color>
     <color name="Checkid_white">#FFFFFF</color>
+
+    <color name="blue">#2196F3</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>

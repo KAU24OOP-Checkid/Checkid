@@ -1,16 +1,16 @@
 package com.example.checkid.view
 
-import android.app.NotificationChannel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
+import com.example.checkid.view.fragment.ReportFragment
+import com.example.checkid.view.fragment.StatisticsFragment
 import com.example.checkid.model.NotificationChannelManager.createNotificationChannel
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.fragment.SettingsFragment
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         // bottomNavigationBar 관련 logic
         binding.bottomNavigationMenu.setOnItemSelectedListener {
             item -> when (item.itemId) {
-                R.id.page_home -> replaceFragment(EmptyFragment())
-                R.id.page_statistics -> replaceFragment(EmptyFragment())
+                R.id.page_home -> replaceFragment(ReportFragment())
+                R.id.page_statistics -> replaceFragment(StatisticsFragment())
                 R.id.page_notification -> replaceFragment(NotificationFragment())
                 R.id.page_setting -> replaceFragment(SettingsFragment())
                 else -> false

@@ -71,8 +71,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.firebase.firestore.ktx)
-    implementation ("androidx.preference:preference:1.2.0")
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation(libs.androidx.preference.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -89,6 +87,13 @@ dependencies {
     // BottomAppBar 관련 dependency
     implementation(libs.androidx.material3)
 
+    //MPAndroidChart 관련 dependency
+    implementation(libs.mpandroidchart)
+
+    // Google Maps 관련 dependency
+    // implementation(libs.google.maps)
+    implementation("androidx.preference:preference:1.2.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
 }
 
 // build.gradle.kts (프로젝트 레벨)
@@ -97,9 +102,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-
     }
-
 }
 
 
