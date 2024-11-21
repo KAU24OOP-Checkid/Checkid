@@ -1,4 +1,4 @@
-import com.example.checkid.model.AppUsage
+import com.example.checkid.model.UsageStatsAdapter
 
 /*
 목적: 자녀의 앱 사용 통계를 조회할 수 있는 화면(Fragment)을 처리하는 코드입니다.
@@ -12,14 +12,16 @@ open class User(
 
 class ChildUser(id: String, pw: String) : User(id, pw) {
     var parent: ParentUser? = null
-    var applicationList: MutableList<AppUsage> = mutableListOf()  // 자녀가 사용하는 애플리케이션 리스트
+    var applicationList: MutableList<UsageStatsAdapter> = mutableListOf()  // 자녀가 사용하는 애플리케이션 리스트
     var totalUsageTime: Long = 0 // 총 사용 시간 (초 단위)
-
+/*
     // 자식의 앱 사용 시간 계산
     fun addUsage(appName: String, usageTime: Long) {
-        applicationList.add(AppUsage(appName, usageTime))
+        applicationList.add(UsageStatsAdapter(appName, usageTime))
         totalUsageTime += usageTime
     }
+
+ */
 }
 
 class ParentUser(id: String, pw: String) : User(id, pw) {
