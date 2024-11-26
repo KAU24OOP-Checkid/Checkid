@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -60,7 +61,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -70,13 +70,15 @@ dependencies {
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
-    implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.preference.ktx)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -94,6 +96,11 @@ dependencies {
     // implementation(libs.google.maps)
     implementation("androidx.preference:preference:1.2.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
+
+    // FireBase 관련 dependency
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.database)
 }
 
 // build.gradle.kts (프로젝트 레벨)

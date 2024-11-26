@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "975994914756",
+    "firebase_url": "https://checkid-f452a-default-rtdb.firebaseio.com",
+    "project_id": "checkid-f452a",
+    "storage_bucket": "checkid-f452a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975994914756:android:1e863b1f8b065d158e8691",
+        "android_client_info": {
+          "package_name": "com.example.checkid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbg58xtmAQeGZDKwTaZ6ECyPkarF_sEsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
