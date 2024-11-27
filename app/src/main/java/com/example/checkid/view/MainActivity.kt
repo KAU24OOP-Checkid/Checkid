@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.checkid.view.fragment.MapsFragment
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
 import com.example.checkid.model.NotificationChannelManager.createNotificationChannel

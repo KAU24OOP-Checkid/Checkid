@@ -16,6 +16,7 @@ import com.example.checkid.model.Notification
 import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
 import com.example.checkid.viewmodel.NotificationViewModel
+import androidx.recyclerview.widget.DiffUtil
 
 class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private var _binding : FragmentNotificationBinding? = null
@@ -116,5 +117,6 @@ class NotificationAdapter(
     fun updateData(newNotifications: List<Notification>) {
         notifications = newNotifications
         notifyDataSetChanged()
+
     }
 }

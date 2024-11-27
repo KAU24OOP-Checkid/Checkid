@@ -10,6 +10,14 @@
             android:summary="Google Maps로 이동합니다." />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="경고 문자">
+        <!-- 알림 메시지 입력 -->
+        <EditTextPreference
+            android:key="notification_message"
+            android:title="경고 메시지 설정"
+            android:summary="자녀에게 보낼 메시지를 입력하세요." />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="알림 설정">
 
         <!-- 토글 스위치를 제공 -->
