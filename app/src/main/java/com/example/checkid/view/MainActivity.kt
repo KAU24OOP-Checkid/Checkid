@@ -1,6 +1,5 @@
 package com.example.checkid.view
 
-import android.app.NotificationChannel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,27 +10,26 @@ import com.example.checkid.view.fragment.ReportFragment
 import com.example.checkid.view.fragment.StatisticsFragment
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
+import com.example.checkid.view.dialogFragment.PermissionRequestDialogFragment
 import com.example.checkid.view.fragment.SettingsFragment
 import com.google.firebase.database.FirebaseDatabase
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, Firebase!")
-
         val view = binding.root
         setContentView(view)
 
         // 권환 확인 후 요청 확인 logic 추가 위치
+
 
         createNotificationChannel(applicationContext)
 
@@ -52,6 +50,10 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onPermissionGranted() {
+
     }
 
     private fun replaceFragment(fragment: Fragment) : Boolean {

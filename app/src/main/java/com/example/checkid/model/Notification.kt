@@ -29,10 +29,10 @@ class Notification (
     }
 }
 
-enum class NotificationType {
-    SYSTEM,
-    REPORT,
-    WARNING
+enum class NotificationType(val value: Int) {
+    SYSTEM(0),
+    REPORT(1),
+    WARNING(2)
     // ...
 }
 

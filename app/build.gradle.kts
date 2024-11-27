@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference.ktx)
+    implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
 
@@ -94,13 +95,18 @@ dependencies {
 
     // Google Maps 관련 dependency
     // implementation(libs.google.maps)
-    implementation("androidx.preference:preference:1.2.0")
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation(libs.androidx.preference)
+    implementation(libs.google.play.services.maps)
 
     // FireBase 관련 dependency
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.database)
+
+    // Preferences DataStore 관련 dependency
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.rxjava2)
+    implementation(libs.androidx.datastore.preferences.rxjava3)
 }
 
 // build.gradle.kts (프로젝트 레벨)
