@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -72,6 +73,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.preference.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

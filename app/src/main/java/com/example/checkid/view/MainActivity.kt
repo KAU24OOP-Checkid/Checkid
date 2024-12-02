@@ -12,6 +12,7 @@ import com.example.checkid.view.fragment.StatisticsFragment
 import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.fragment.SettingsFragment
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        val database=FirebaseDatabase.getInstance()
+        val myRef=database.getReference("key")
+        myRef.setValue("Value")
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val view = binding.root
