@@ -1,10 +1,15 @@
 package com.example.checkid.view
 
+import android.content.Context
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
+import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.NotificationChannelManager.createNotificationChannel
 import com.example.checkid.view.fragment.ReportFragment
 import com.example.checkid.view.fragment.StatisticsFragment
@@ -12,6 +17,9 @@ import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.dialogFragment.PermissionRequestDialogFragment
 import com.example.checkid.view.fragment.SettingsFragment
+import com.example.checkid.viewmodel.LoginViewModel
+import com.example.checkid.viewmodel.LoginViewModelFactory
+
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -28,8 +36,9 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
         val view = binding.root
         setContentView(view)
 
-        // 권환 확인 후 요청 확인 logic 추가 위치
+        login(applicationContext) // 로그인 logic
 
+        // 권환 확인 후 요청 확인 logic 추가 위치
 
         createNotificationChannel(applicationContext)
 
@@ -54,6 +63,20 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
 
     override fun onPermissionGranted() {
 
+    }
+
+    private fun login(context: Context) {
+        val viewModel: LoginViewModel by viewModels() {
+            LoginViewModelFactory(applicationContext)
+        }
+
+
+        if (viewModel.isLogin(context)) {
+
+
+
+            viewModel.toggleIsLogin(context)
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) : Boolean {
