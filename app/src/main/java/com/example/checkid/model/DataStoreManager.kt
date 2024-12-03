@@ -33,7 +33,7 @@ object DataStoreManager {
         }
     }
 
-    fun getIsLoginFlow(context: Context) : Flow<Boolean> {
+    private fun getIsLoginFlow(context: Context) : Flow<Boolean> {
         return context.dataStore.data.map {
             preferences -> (preferences[KEY_USER_LOGIN] ?: 0) == 1
         }
@@ -51,9 +51,15 @@ object DataStoreManager {
         }
     }
 
-    private fun getUserId(context: Context) : Flow<String> {
+    private fun getUserIdFlow(context: Context) : Flow<String> {
         return context.dataStore.data.map {
             preferences -> preferences[KEY_USER_ID] ?: ""
+        }
+    }
+
+    fun getUserId(context: Context) : String {
+        return runBlocking {
+            getUserIdFlow(context).first()
         }
     }
 
