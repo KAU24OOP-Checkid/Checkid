@@ -1,20 +1,19 @@
 package com.example.checkid.model
 
-import ChildUser
-import ParentUser
 import User
 
 object UserRepository {
     var users:MutableList<User> = mutableListOf()
 
     init {
-        val a = ChildUser("1", "1")
-        val b = ParentUser("2", "2")
-
-        a.parent = b
-        b.child = a
+        val a = User("1", "1234", "2")
+        val b = User("2", "1234", "1")
 
         users.add(a)
         users.add(b)
+    }
+
+    fun findByIdPw(id: String, pw: String): User? {
+        return users.find {it.id == id && it.pw == pw}
     }
 }

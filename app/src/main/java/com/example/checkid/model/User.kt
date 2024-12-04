@@ -7,9 +7,11 @@ import com.example.checkid.model.UsageStatsAdapter
 
 open class User(
     val id: String,
-    var pw: String
+    var pw: String,
+    var partner_id: String
 )
 
+/*
 class ChildUser(id: String, pw: String) : User(id, pw) {
     var parent: ParentUser? = null
     var applicationList: MutableList<UsageStatsAdapter> = mutableListOf()  // 자녀가 사용하는 애플리케이션 리스트
@@ -19,3 +21,4 @@ class ChildUser(id: String, pw: String) : User(id, pw) {
 class ParentUser(id: String, pw: String) : User(id, pw) {
     var child: ChildUser? = null  // 부모가 자식에 대한 참조를 유지
 }
+ */
