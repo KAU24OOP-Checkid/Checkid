@@ -58,7 +58,7 @@ class ReportFragment : Fragment() {
         val totalUsageEntries = mutableListOf<BarEntry>()
         var index = 0f
 
-        // 모든 앱 사용 시간 합산 후 각 앱의 사용 비율을 구합니다.
+        // 모든 앱 사용 시간 합산 후 각 앱의 사용 비율
         val totalUsageTime = usageStatsList.sumOf { it.totalTimeInForeground }
         usageStatsList.forEach { usageStats ->
             val usagePercentage = (usageStats.totalTimeInForeground.toFloat() / totalUsageTime) * 100
