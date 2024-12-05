@@ -99,7 +99,7 @@ dependencies {
     // BottomAppBar 관련 dependency
     implementation(libs.androidx.material3)
 
-    //MPAndroidChart 관련 dependency
+    // MPAndroidChart 관련 dependency
     implementation(libs.mpandroidchart)
 
     // Google Maps 관련 dependency

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.checkid.view.fragment.MapsFragment
 
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
 
         // 일반적인 경우 ReportFragment
         else
-            replaceFragment(ReportFragment())
+            replaceFragment(EmptyFragment())
 
         binding.bottomNavigationMenu.setOnItemSelectedListener {
             item -> when (item.itemId) {
