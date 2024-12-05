@@ -32,18 +32,6 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
         binding.LoginButton.setOnClickListener {
             val id = binding.LoginID.text.toString()
             val pw = binding.LoginPW.text.toString()
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                val isSuccess = viewModel.login(requireContext(), id, pw)
-
-                if (isSuccess) {
-
-                }
-
-                else {
-
-                }
-            }
         }
 
         val view = binding.root

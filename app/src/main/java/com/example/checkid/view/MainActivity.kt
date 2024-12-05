@@ -19,8 +19,10 @@ import com.example.checkid.view.fragment.LoginFragment
 import com.example.checkid.view.fragment.SettingsFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
-
+import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
     private lateinit var binding: ActivityMainBinding
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        val database = FirebaseDatabase.getInstance()
+        val database : FirebaseFirestore = Firebase.firestore
         val view = binding.root
         setContentView(view)
 
