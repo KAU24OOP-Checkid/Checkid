@@ -1,7 +1,12 @@
 package com.example.checkid.model
 
+import android.content.Context
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+
 object NotificationRepository {
     private const val SIZE = 20
+
     var notifications = ArrayList<Notification>().apply {
         add(Notification(NotificationType.REPORT, "1"))
         add(Notification(NotificationType.WARNING, "2"))
@@ -28,5 +33,33 @@ object NotificationRepository {
 
     fun deleteNotification(index: Int) {
         notifications.removeAt(index)
+    }
+
+    fun getNotification(context: Context) {
+        val db = FirebaseFirestore.getInstance()
+        val userId = DataStoreManager.getUserId(context)
+
+        val reference = db.collection("NotificationRepository").document("test")
+        // test -> userId
+
+
+        // 고치기 List<Map<>>
+        /*
+        reference.get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val notification = document.toObject(List<Notification>::class.java)
+
+                    if (notification != null) {
+                        notifications = notification
+                    }
+                }
+            }
+
+            .addOnFailureListener { exception ->
+                Log.d("Firestore", "Failed to get notifications: ", exception)
+            }
+        */
+
     }
 }

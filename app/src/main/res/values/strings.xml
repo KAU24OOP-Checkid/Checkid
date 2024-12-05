@@ -3,6 +3,15 @@
 <resources>
     <string name="app_name">Checkid</string>
     <string name="button_text">button</string>
+    <string name="O">확인</string>
+
+    <string name="login_button">로그인</string>
+    <string name="login_id_txt">아이디</string>
+    <string name="login_pw_txt">비밀번호</string>
+    <string name="login_success">로그인에 성공했습니다.</string>
+    <string name="login_failed">ID, PW가 틀렸습니다.</string>
+
+    <string name="Permission_guide">이 앱을 사용하기 위해서는 특정 권한이 필요합니다.</string>
 
     <string name="Notification_title">제목</string>
     <string name="Notification_content">내용</string>
@@ -12,7 +21,20 @@
     <string name="bottom_navigation_view_button3">알림</string>
     <string name="bottom_navigation_view_button4">설정</string>
     <string name="app_icon_desc">App Icon</string>
+
+
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <!-- statisticsfragment에 있음 -->
+    <string name="most_used_app_text">가장 많이 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
+    <string name="least_used_app_text">가장 적게 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
+    <string name="times_over_limit_text">기준 시간 초과 횟수: %1$d</string>
+
+
 </resources>
