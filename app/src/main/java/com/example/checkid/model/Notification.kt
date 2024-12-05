@@ -1,7 +1,5 @@
 package com.example.checkid.model
 
-import ChildUser
-import ParentUser
 import User
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -29,10 +27,10 @@ class Notification (
     }
 }
 
-enum class NotificationType {
-    SYSTEM,
-    REPORT,
-    WARNING
+enum class NotificationType(val value: Int) {
+    SYSTEM(0),
+    REPORT(1),
+    WARNING(2)
     // ...
 }
 
@@ -40,11 +38,12 @@ object NotificationChannelManager {
     const val PARENT_CHANNEL_ID = "parent_channel_id"
     const val CHILD_CHANNEL_ID = "child_channel_id"
 
-    private val userType : User = ParentUser("c", "1") //SharedPreferences 설정 후 수정
+    // private val userType : User = ParentUser("c", "1") //SharedPreferences 설정 후 수정
 
     fun createNotificationChannel(context: Context) {
         lateinit var channel: NotificationChannel
 
+        /*
         // API 26 버전 이상은 'NotificationChannel' 이 반드시 필요하다.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -72,6 +71,8 @@ object NotificationChannelManager {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+
+         */
     }
 
     fun sendNotification(context: Context, channelId: String, notificationType: NotificationType, textContent: String) {
