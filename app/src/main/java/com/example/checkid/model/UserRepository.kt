@@ -1,6 +1,7 @@
 package com.example.checkid.model
 
 import User
+import ParentUser
 
 object UserRepository {
     var users:MutableList<User> = mutableListOf()

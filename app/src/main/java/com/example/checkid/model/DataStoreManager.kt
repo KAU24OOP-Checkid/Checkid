@@ -15,6 +15,7 @@ object DataStoreManager {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "system")
 
     private val KEY_USER_LOGIN = intPreferencesKey("key_user_login")
+    private val KEY_USER_TYPE = stringPreferencesKey("key_user_type")
     private val KEY_USER_ID = stringPreferencesKey("key_id")
     private val KEY_USER_PARTNER_ID = stringPreferencesKey("key_partner_id")
 
@@ -56,6 +57,20 @@ object DataStoreManager {
         return runBlocking {
             context.dataStore.data.map { preferences ->
                 preferences[KEY_USER_PARTNER_ID] ?: ""
+            }.first()
+        }
+    }
+
+    suspend fun setUserType(context: Context, isParent: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_USER_TYPE] = if (isParent) "Parent" else "Child"
+        }
+    }
+
+    fun getUserType(context: Context): String {
+        return runBlocking{
+            context.dataStore.data.map { preferences ->
+                preferences[KEY_USER_TYPE] ?: "null"
             }.first()
         }
     }

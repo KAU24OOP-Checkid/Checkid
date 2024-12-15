@@ -23,13 +23,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
-class ChildActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
+class ChildActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val database : FirebaseFirestore = Firebase.firestore
@@ -37,26 +36,13 @@ class ChildActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permi
 
         setContentView(view)
 
-        // 1. 로그인 check logic
-        setActionBar(false)
+        if (false) {
 
-        login {
-            permission {
-                setActionBar(true)
-            }
         }
 
-        // 2. 권한 check logic
-        createNotificationChannel(applicationContext)
-
-        // Main logic
-        // notification을 통해 실행할 경우 NotificationFragment
-        if (intent?.getStringExtra("openFragment") == "NotificationFragment")
-            replaceFragment(NotificationFragment())
-
-        // 일반적인 경우 ReportFragment
-        else
-            replaceFragment(ReportFragment())
+        else {
+            replaceFragment(ReportFragment()) // 나중에 바꾸기
+        }
 
         binding.bottomNavigationMenu.setOnItemSelectedListener {
             item -> when (item.itemId) {
@@ -69,35 +55,6 @@ class ChildActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permi
         }
     }
 
-    private fun login(onLoginComplete: () -> Unit) {
-        val loginViewModel: LoginViewModel by viewModels() {
-            LoginViewModelFactory(applicationContext)
-        }
-
-        loginViewModel.isLogin.observe(this) { isLogin ->
-            if (!isLogin) {
-                replaceFragment(LoginFragment())
-                setActionBar(false)
-            }
-
-            else {
-                onLoginComplete()
-            }
-        }
-    }
-
-    private fun permission(onPermissionGranted: () -> Unit) {
-        if (true)
-            replaceFragment(EmptyFragment())
-
-        else
-            onPermissionGranted()
-    }
-
-    override fun onPermissionGranted() {
-
-    }
-
     private fun replaceFragment(fragment: Fragment) : Boolean {
         supportFragmentManager.beginTransaction()
             .setReorderingAllowed(true)
@@ -105,17 +62,5 @@ class ChildActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permi
             .commit()
 
         return true
-    }
-
-    private fun setActionBar(value : Boolean) {
-        if (value) {
-            supportActionBar?.show()
-            binding.bottomNavigationMenu.visibility = View.VISIBLE
-        }
-
-        else {
-            supportActionBar?.hide()
-            binding.bottomNavigationMenu.visibility = View.GONE
-        }
     }
 }

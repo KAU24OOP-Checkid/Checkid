@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 class PermissionRequestDialogFragment: DialogFragment() {
-
     interface PermissionRequestListener {
         fun onPermissionGranted()
     }

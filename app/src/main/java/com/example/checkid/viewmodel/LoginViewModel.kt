@@ -21,6 +21,10 @@ class LoginViewModel(context: Context) : ViewModel() {
         }
     }
 
+    fun getUserType(context: Context): String {
+        return DataStoreManager.getUserType(context)
+    }
+
     fun isLogin(context: Context): Boolean = DataStoreManager.getIsLogin(context)
 
     fun login(context: Context, id: String, pw: String): Boolean {
@@ -30,7 +34,7 @@ class LoginViewModel(context: Context) : ViewModel() {
             viewModelScope.launch {
                 DataStoreManager.setIsLogin(context, true)
                 DataStoreManager.setUserId(context, id)
-                DataStoreManager.setUserPartnerId(context, user.partner_id)
+                DataStoreManager.setUserPartnerId(context, user.partner_id!!) // !! 고치기
             }
 
             return true

@@ -1,17 +1,14 @@
 package com.example.checkid.model
 
-import User
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.checkid.R
 import com.example.checkid.model.NotificationRepository.addNotification
-import com.example.checkid.view.MainActivity
+import com.example.checkid.view.LoginActivity
 
 class Notification (
     val notificationType : NotificationType = NotificationType.SYSTEM,
@@ -78,7 +75,7 @@ object NotificationChannelManager {
     fun sendNotification(context: Context, channelId: String, notificationType: NotificationType, textContent: String) {
         val notification: Notification = Notification(notificationType, textContent)
 
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("openFragment", "NotificationFragment")
         }

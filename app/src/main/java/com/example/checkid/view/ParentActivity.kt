@@ -25,31 +25,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.security.Permission
 
-class ParentActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
+class ParentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val database : FirebaseFirestore = Firebase.firestore
         val view = binding.root
 
         setContentView(view)
-
-        // 1. 로그인 check logic
-        setActionBar(false)
-
-        login {
-            permission {
-                setActionBar(true)
-            }
-        }
-
-        // 2. 권한 check logic
-        createNotificationChannel(applicationContext)
 
         // Main logic
         // notification을 통해 실행할 경우 NotificationFragment
@@ -71,35 +58,6 @@ class ParentActivity : AppCompatActivity(), PermissionRequestDialogFragment.Perm
         }
     }
 
-    private fun login(onLoginComplete: () -> Unit) {
-        val loginViewModel: LoginViewModel by viewModels() {
-            LoginViewModelFactory(applicationContext)
-        }
-
-        loginViewModel.isLogin.observe(this) { isLogin ->
-            if (!isLogin) {
-                replaceFragment(LoginFragment())
-                setActionBar(false)
-            }
-
-            else {
-                onLoginComplete()
-            }
-        }
-    }
-
-    private fun permission(onPermissionGranted: () -> Unit) {
-        if (true)
-            replaceFragment(EmptyFragment())
-
-        else
-            onPermissionGranted()
-    }
-
-    override fun onPermissionGranted() {
-
-    }
-
     private fun replaceFragment(fragment: Fragment) : Boolean {
         supportFragmentManager.beginTransaction()
             .setReorderingAllowed(true)
@@ -107,17 +65,5 @@ class ParentActivity : AppCompatActivity(), PermissionRequestDialogFragment.Perm
             .commit()
 
         return true
-    }
-
-    private fun setActionBar(value : Boolean) {
-        if (value) {
-            supportActionBar?.show()
-            binding.bottomNavigationMenu.visibility = View.VISIBLE
-        }
-
-        else {
-            supportActionBar?.hide()
-            binding.bottomNavigationMenu.visibility = View.GONE
-        }
     }
 }
