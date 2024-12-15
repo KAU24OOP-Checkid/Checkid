@@ -2,6 +2,8 @@ package com.example.checkid.viewmodel
 
 import User
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,24 +12,26 @@ import com.example.checkid.model.UserRepository
 import kotlinx.coroutines.launch
 
 class LoginViewModel(context: Context) : ViewModel() {
-    fun toggleIsLogin(context: Context) {
-        val isLogin = DataStoreManager.getIsLogin(context)
+    private val _isLogin = MutableLiveData<Boolean>()
+    val isLogin: LiveData<Boolean> get() = _isLogin
 
+    init {
         viewModelScope.launch {
-            DataStoreManager.toggleIsLogin(context, isLogin)
+            _isLogin.value = DataStoreManager.getIsLogin(context)
         }
     }
 
-    fun isLogin(context: Context): Boolean {
-        return DataStoreManager.getIsLogin(context)
-    }
+    fun isLogin(context: Context): Boolean = DataStoreManager.getIsLogin(context)
 
-    suspend fun login(context: Context, id: String, pw: String) : Boolean {
+    fun login(context: Context, id: String, pw: String): Boolean {
         val user: User? = UserRepository.findByIdPw(id, pw)
 
         if (user != null) {
-            DataStoreManager.setUserId(context, id)
-            DataStoreManager.setUserPartnerId(context, user.partner_id)
+            viewModelScope.launch {
+                DataStoreManager.setIsLogin(context, true)
+                DataStoreManager.setUserId(context, id)
+                DataStoreManager.setUserPartnerId(context, user.partner_id)
+            }
 
             return true
         }

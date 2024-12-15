@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
 
+
 class LoginIsSuccessDialogFragment : DialogFragment() {
     private var _binding: DialogFragmentLoginIsSuccessBinding? = null
     private val binding get() = _binding!!
@@ -15,7 +16,7 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ):View {
         _binding = DialogFragmentLoginIsSuccessBinding.inflate(inflater, container, false)
         return binding.root
     }

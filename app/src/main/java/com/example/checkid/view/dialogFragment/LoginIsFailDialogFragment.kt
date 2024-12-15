@@ -5,25 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.checkid.databinding.DialogFragmentLoginIsFailedBinding
+import com.example.checkid.databinding.DialogFragmentLoginIsFailBinding
+import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
 
-class LoginIsFailedDialogFragment : DialogFragment() {
-    private var _binding: DialogFragmentLoginIsFailedBinding? = null
+class LoginIsFailDialogFragment : DialogFragment() {
+    private var _binding: DialogFragmentLoginIsFailBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = DialogFragmentLoginIsFailedBinding.inflate(inflater, container, false)
+    ):View {
+        _binding = DialogFragmentLoginIsFailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.LoginIsFailedButton.setOnClickListener {
+        binding.loginIsFailButton.setOnClickListener {
             dismiss()
         }
     }

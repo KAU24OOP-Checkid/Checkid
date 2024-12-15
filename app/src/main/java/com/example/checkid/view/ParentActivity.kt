@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.security.Permission
 
-class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
+class ParentActivity : AppCompatActivity(), PermissionRequestDialogFragment.PermissionRequestListener {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +55,20 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
         // notification을 통해 실행할 경우 NotificationFragment
         if (intent?.getStringExtra("openFragment") == "NotificationFragment")
             replaceFragment(NotificationFragment())
+
+        // 일반적인 경우 ReportFragment
+        else
+            replaceFragment(ReportFragment())
+
+        binding.bottomNavigationMenu.setOnItemSelectedListener {
+            item -> when (item.itemId) {
+                R.id.page_home -> replaceFragment(ReportFragment())
+                R.id.page_statistics -> replaceFragment(StatisticsFragment())
+                R.id.page_notification -> replaceFragment(NotificationFragment())
+                R.id.page_setting -> replaceFragment(SettingsFragment())
+                else -> false
+            }
+        }
     }
 
     private fun login(onLoginComplete: () -> Unit) {

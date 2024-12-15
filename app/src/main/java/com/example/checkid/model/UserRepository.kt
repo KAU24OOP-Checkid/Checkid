@@ -6,11 +6,11 @@ object UserRepository {
     var users:MutableList<User> = mutableListOf()
 
     init {
-        val a = User("1", "1234", "2")
-        val b = User("2", "1234", "1")
+        val kid = User("kid", "kid", "parent")
+        val parent = User("parent", "parent", "kid")
 
-        users.add(a)
-        users.add(b)
+        users.add(kid)
+        users.add(parent)
     }
 
     fun findByIdPw(id: String, pw: String): User? {

@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
 
