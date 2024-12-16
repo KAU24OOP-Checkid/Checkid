@@ -39,7 +39,7 @@ open class BaseActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             login()
-            permission()
+            // permission()
             startActivity()
         }
     }

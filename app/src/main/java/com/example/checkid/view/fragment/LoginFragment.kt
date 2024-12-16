@@ -37,16 +37,19 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
             lifecycleScope.launch {
                 val id = binding.LoginID.text.toString()
                 val password = binding.LoginPassword.text.toString()
-                val loginResult = withContext(Dispatchers.IO) {
+
+                withContext(Dispatchers.IO) {
                     viewModel.login(requireContext(), id, password)
                 }
 
-                if (viewModel.isLogin(requireContext())) {
-                    LoginIsSuccessDialogFragment().show(childFragmentManager, "")
-                }
+                viewModel.isLogin.observe(viewLifecycleOwner) {isLogin ->
+                    if (isLogin) {
+                        LoginIsSuccessDialogFragment().show(childFragmentManager, "")
+                    }
 
-                else {
-                    LoginIsFailDialogFragment().show(childFragmentManager, "")
+                    else {
+                        LoginIsFailDialogFragment().show(childFragmentManager, "")
+                    }
                 }
             }
         }

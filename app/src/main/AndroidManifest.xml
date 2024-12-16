@@ -45,7 +45,19 @@
             </intent-filter>
         </activity>
 
+        <!--ChildActivity -->
+        <activity
+            android:name=".view.ChildActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Checkid">
+        </activity>
+
+        <!--ParentActivity -->
+        <activity
+            android:name=".view.ParentActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Checkid">
+        </activity>
 
     </application>
-
 </manifest>
