@@ -61,9 +61,9 @@ object DataStoreManager {
         }
     }
 
-    suspend fun setUserType(context: Context, isParent: Boolean) {
+    suspend fun setUserType(context: Context, userType: String) {
         context.dataStore.edit { preferences ->
-            preferences[KEY_USER_TYPE] = if (isParent) "Parent" else "Child"
+            preferences[KEY_USER_TYPE] = if (userType == "Parent") "Parent" else "Child"
         }
     }
 

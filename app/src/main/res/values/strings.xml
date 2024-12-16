@@ -11,17 +11,27 @@
     <string name="login_success">로그인에 성공했습니다.</string>
     <string name="login_failed">ID, PW가 틀렸습니다.</string>
 
+    <string name="permission_check_button">권환 확인</string>
+    <string name="permission_open_setting_button">설정 창 열기</string>
+    <string name="permission_success">권한 확인에 성공했습니다.</string>
+    <string name="permission_failed">권한이 부족합니다.</string>
+
     <string name="Permission_guide">이 앱을 사용하기 위해서는 특정 권한이 필요합니다.</string>
 
     <string name="Notification_title">제목</string>
     <string name="Notification_content">내용</string>
 
+    <!-- BottomNavigationBar -->
     <string name="bottom_navigation_view_button1">기록</string>
     <string name="bottom_navigation_view_button2">통계</string>
     <string name="bottom_navigation_view_button3">알림</string>
     <string name="bottom_navigation_view_button4">설정</string>
     <string name="app_icon_desc">App Icon</string>
 
+    <string name="bottom_navigation_view_button1_child">App</string>
+    <string name="bottom_navigation_view_button2_child">테스트</string>
+    <string name="bottom_navigation_view_button3_child">알림</string>
+    <string name="bottom_navigation_view_button4_child">설정</string>
 
 
 
@@ -35,6 +45,7 @@
     <string name="most_used_app_text">가장 많이 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
     <string name="least_used_app_text">가장 적게 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
     <string name="times_over_limit_text">기준 시간 초과 횟수: %1$d</string>
+
 
 
 </resources>

@@ -5,8 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/activity_login_FragmentContainerView"
-        android:name="com.example.checkid.view.fragment.LoginFragment"
+        android:id="@+id/activity_base_FragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

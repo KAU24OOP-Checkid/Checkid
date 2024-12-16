@@ -25,22 +25,31 @@ class LoginViewModel(context: Context) : ViewModel() {
         return DataStoreManager.getUserType(context)
     }
 
-    fun isLogin(context: Context): Boolean = DataStoreManager.getIsLogin(context)
+    fun isLogin(context: Context): Boolean {
+        _isLogin.value = DataStoreManager.getIsLogin(context)
 
-    fun login(context: Context, id: String, pw: String): Boolean {
-        val user: User? = UserRepository.findByIdPw(id, pw)
+        return DataStoreManager.getIsLogin(context)
+    }
 
-        if (user != null) {
-            viewModelScope.launch {
+    fun login(context: Context, id: String, password: String) {
+        viewModelScope.launch {
+            val user: User? = UserRepository.getUserByIdAndPassword(id, password)
+
+            if (user != null) {
+                val userType = UserRepository.getUserType(user) ?: "Child"
+
                 DataStoreManager.setIsLogin(context, true)
+                DataStoreManager.setUserType(context, userType)
                 DataStoreManager.setUserId(context, id)
-                DataStoreManager.setUserPartnerId(context, user.partner_id!!) // !! 고치기
+                DataStoreManager.setUserPartnerId(context, user.partnerId ?: "")
+
+                _isLogin.value = true
             }
 
-            return true
+            else {
+                _isLogin.value = false
+            }
         }
-
-        return false
     }
 }
 

@@ -1,8 +1,9 @@
 package com.example.checkid.model
 
 import android.content.Context
-import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.tasks.await
 
 object NotificationRepository {
     private const val SIZE = 20
@@ -25,41 +26,55 @@ object NotificationRepository {
         add(Notification(NotificationType.SYSTEM, "12"))
     }
 
-    fun addNotification(notification: Notification) {
-        if (notifications.size >= SIZE) notifications.removeAt(0)
+    private const val COLLECTION = "NotificationRepository"
 
-        notifications.add(notification)
-    }
+    private const val DOCUMENT_NOTIFICATION_TYPE = "notificationType"
+    private const val DOCUMENT_TEXT_CONTENT = "textContent"
+    private const val DOCUMENT_TEXT_TITLE = "textTitle"
 
-    fun deleteNotification(index: Int) {
-        notifications.removeAt(index)
-    }
+    private const val DEFAULT_NOTIFICATION_TYPE = 0
+    private const val DEFAULT_TEXT_CONTENT = ""
+    private const val DEFAULT_TEXT_TITLE = ""
 
-    fun getNotification(context: Context) {
-        val db = FirebaseFirestore.getInstance()
-        val userId = DataStoreManager.getUserId(context)
+    suspend fun loadNotification(id: String) {
+        val db = Firebase.firestore
 
-        val reference = db.collection("NotificationRepository").document("test")
-        // test -> userId
+        // 수정 필요
+        try {
+            val querySnapshot = db.collection(COLLECTION).get().await()
 
-
-        // 고치기 List<Map<>>
-        /*
-        reference.get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val notification = document.toObject(List<Notification>::class.java)
-
-                    if (notification != null) {
-                        notifications = notification
-                    }
+            for (document in querySnapshot.documents) {
+                val notification = Notification(
+                    notificationType = NotificationType.fromValue(
+                        (document.getLong(DOCUMENT_NOTIFICATION_TYPE)?.toInt() ?: DEFAULT_NOTIFICATION_TYPE)
+                    ),
+                    textContent = document.getString(DOCUMENT_TEXT_CONTENT) ?: DEFAULT_TEXT_CONTENT
+                ).apply {
+                    textTitle = document.getString(DOCUMENT_TEXT_TITLE) ?: DEFAULT_TEXT_TITLE
                 }
             }
 
-            .addOnFailureListener { exception ->
-                Log.d("Firestore", "Failed to get notifications: ", exception)
-            }
-        */
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
+    // 수정 필요
+    suspend fun addNotification(notification: Notification, id: String) {
+        val db = Firebase.firestore
+        val notificationData = mapOf(
+            DOCUMENT_NOTIFICATION_TYPE to notification.notificationType,
+            DOCUMENT_TEXT_CONTENT to notification.textContent,
+            DOCUMENT_TEXT_TITLE to notification.textTitle
+        )
+
+        db.collection(COLLECTION)
+            .document(id)
+    }
+
+    suspend fun deleteNotification(index: Int) {
+        val db = Firebase.firestore
+
+        notifications.removeAt(index)
     }
 }
