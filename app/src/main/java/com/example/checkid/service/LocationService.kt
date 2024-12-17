@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.checkid.model.Location as ChildLocation
 import com.example.checkid.utils.FirebaseHelper
 import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

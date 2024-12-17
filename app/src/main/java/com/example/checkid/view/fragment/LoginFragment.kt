@@ -9,10 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.checkid.R
 import com.example.checkid.databinding.FragmentLoginBinding
-import com.example.checkid.view.MainActivity
+
+import com.example.checkid.view.dialogFragment.LoginIsFailDialogFragment
+import com.example.checkid.view.dialogFragment.LoginIsSuccessDialogFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment() : Fragment(R.layout.fragment_login) {
     private var _binding : FragmentLoginBinding? = null
@@ -30,18 +34,22 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         binding.LoginButton.setOnClickListener {
-            val id = binding.LoginID.text.toString()
-            val pw = binding.LoginPW.text.toString()
+            lifecycleScope.launch {
+                val id = binding.LoginID.text.toString()
+                val password = binding.LoginPassword.text.toString()
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                val isSuccess = viewModel.login(requireContext(), id, pw)
-
-                if (isSuccess) {
-
+                withContext(Dispatchers.IO) {
+                    viewModel.login(requireContext(), id, password)
                 }
 
-                else {
+                viewModel.isLogin.observe(viewLifecycleOwner) {isLogin ->
+                    if (isLogin) {
+                        LoginIsSuccessDialogFragment().show(childFragmentManager, "")
+                    }
 
+                    else {
+                        LoginIsFailDialogFragment().show(childFragmentManager, "")
+                    }
                 }
             }
         }
@@ -54,5 +62,4 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -9,12 +9,18 @@ plugins {
 
 android {
     namespace = "com.example.checkid"
-    compileSdk = 34
+    compileSdk = 35
+
+    // 나중에 지우기
+    //C:\Users\heeflower5001\AndroidStudioProjects\Checkid\app\build\intermediates\lint_intermediate_text_report\debug\lintReportDebug\lint-results-debug.txt
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
 
     defaultConfig {
         applicationId = "com.example.checkid"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -81,6 +87,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
 

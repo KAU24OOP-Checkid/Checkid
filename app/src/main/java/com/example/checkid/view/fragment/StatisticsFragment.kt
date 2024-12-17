@@ -55,11 +55,12 @@ class StatisticsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
+
     private fun setupObservers() {
         statisticsViewModel.usageStatsList.observe(viewLifecycleOwner, Observer { usageStatsList ->
             val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
             adapter.updateUsageStats(usageStatsDataList)
-            showUsageStatistics(usageStatsDataList) // 추가된 기능 호출
+            // showUsageStatistics(usageStatsDataList) // 추가된 기능 호출
             firebaseManager.uploadUsageStats(usageStatsDataList) // Firebase에 데이터 업로드
         })
 
@@ -68,6 +69,7 @@ class StatisticsFragment : Fragment() {
         } // Firebase에서 데이터 가져오기
     }
 
+    /*
     private fun showUsageStatistics(usageStatsList: List<UsageStatsData>) {
         val usageStatsText = usageStatisticsProcessor.processUsageStatistics(requireContext(), usageStatsList)
         binding.mostUsedAppText.text = usageStatsText.mostUsedAppText
@@ -75,6 +77,8 @@ class StatisticsFragment : Fragment() {
         binding.timesOverLimitText.text = usageStatsText.timesOverLimitText
         binding.weeklyUsageText.text = usageStatsText.weeklyUsageText
     }
+
+     */
 
     override fun onDestroyView() {
         super.onDestroyView()

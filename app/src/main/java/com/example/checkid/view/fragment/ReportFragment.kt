@@ -28,7 +28,7 @@ class ReportFragment : Fragment() {
     ): View {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         setupRecyclerView()
-        setupObservers()
+        // setupObservers()
         reportViewModel.loadUsageStats()
         return binding.root
     }
@@ -41,12 +41,15 @@ class ReportFragment : Fragment() {
         }
     }
 
+    /*
     private fun setupObservers() {
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
             usageStatsAdapter.updateUsageStats(usageStatsList)
             updateChart(usageStatsList)
         }
     }
+
+     */
 
     private fun updateChart(usageStatsList: List<UsageStats>) {
         val totalUsage = usageStatsList.sumOf { it.totalTimeInForeground }

@@ -1,30 +1,32 @@
 package com.example.checkid.view.dialogFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
+import com.example.checkid.databinding.DialogFragmentPermissionIsSuccessBinding
 
 
-class LoginIsSuccessDialogFragment : DialogFragment() {
-    private var _binding: DialogFragmentLoginIsSuccessBinding? = null
+class PermissionIsSuccessDialogFragment: DialogFragment() {
+    private var _binding: DialogFragmentPermissionIsSuccessBinding? = null
     private val binding get() = _binding!!
+    private var listener : PermissionGrantedListener? = null
 
-    interface OnDialogButtonClickListener {
-        fun onDialogButtonClick()
+    interface PermissionGrantedListener {
+        fun onPermissionGranted()
     }
 
-    private var listener: OnDialogButtonClickListener? = null
+    fun setPermissionListener(listener: PermissionGrantedListener) {
+        this.listener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ):View {
-        _binding = DialogFragmentLoginIsSuccessBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = DialogFragmentPermissionIsSuccessBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,7 +35,7 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
 
         val fragment = parentFragment
 
-        binding.loginIsSuccessButton.setOnClickListener {
+        binding.permissionIsSuccessButton.setOnClickListener {
             dismiss()
 
             if (fragment != null) {
