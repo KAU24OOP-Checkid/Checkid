@@ -15,39 +15,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/statisticsLayout"
+    <!-- ScrollView로 감싸서 전체적인 스크롤을 지원하도록 변경 -->
+    <android.widget.ScrollView
+        android:id="@+id/statisticsScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/mostUsedAppText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/statisticsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="가장 많이 사용된 애플리케이션" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/leastUsedAppText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="가장 적게 사용된 애플리케이션" />
+            <TextView
+                android:id="@+id/mostUsedAppText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가장 많이 사용된 애플리케이션" />
 
-        <TextView
-            android:id="@+id/timesOverLimitText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기준 시간 초과 횟수" />
+            <TextView
+                android:id="@+id/leastUsedAppText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가장 적게 사용된 애플리케이션" />
 
-        <TextView
-            android:id="@+id/weeklyUsageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="주별 애플리케이션 사용 시간" />
+            <TextView
+                android:id="@+id/timesOverLimitText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기준 시간 초과 횟수" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/weeklyUsageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주별 애플리케이션 사용 시간" />
+
+        </LinearLayout>
+    </android.widget.ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

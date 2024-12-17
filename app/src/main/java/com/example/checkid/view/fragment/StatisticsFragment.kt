@@ -57,15 +57,17 @@ class StatisticsFragment : Fragment() {
 
     private fun setupObservers() {
         statisticsViewModel.usageStatsList.observe(viewLifecycleOwner, Observer { usageStatsList ->
+            // UsageStatsData를 UsageStats로 변환하여 사용
             val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
-            adapter.updateUsageStats(usageStatsDataList)
-            showUsageStatistics(usageStatsDataList) // 추가된 기능 호출
-            firebaseManager.uploadUsageStats(usageStatsDataList) // Firebase에 데이터 업로드
+            showUsageStatistics(usageStatsDataList) // 변환된 데이터로 UI 업데이트
+            firebaseManager.uploadUsageStats(usageStatsDataList) // Firebase 업로드
+            adapter.updateUsageStats(usageStatsDataList) // 변환된 데이터로 어댑터 업데이트
         })
 
         firebaseManager.fetchUsageStats { usageStatsList ->
+            // Firebase에서 받은 데이터는 이미 UsageStats이므로 변환하지 않고 바로 어댑터에 전달
             adapter.updateUsageStats(usageStatsList)
-        } // Firebase에서 데이터 가져오기
+        }
     }
 
     private fun showUsageStatistics(usageStatsList: List<UsageStatsData>) {

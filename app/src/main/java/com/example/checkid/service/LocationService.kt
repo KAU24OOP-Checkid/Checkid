@@ -1,4 +1,6 @@
+/*
 package com.example.checkid.service
+
 
 import android.app.Service
 import android.content.Intent
@@ -48,3 +50,4 @@ class LocationService : Service() {
         return null
     }
 }
+*/

@@ -2,9 +2,8 @@
 package com.example.checkid.processor
 
 import android.content.Context
-import com.example.checkid.R
-import android.app.usage.UsageStats
 import android.content.pm.PackageManager
+import com.example.checkid.model.UsageStatsData
 import java.util.*
 
 class UsageStatisticsProcessor {
@@ -15,7 +14,7 @@ class UsageStatisticsProcessor {
         val weeklyUsageText: String
     )
 
-    fun processUsageStatistics(context: Context, usageStatsList: List<UsageStats>): UsageStatsText {
+    fun processUsageStatistics(context: Context, usageStatsList: List<UsageStatsData>): UsageStatsText {
         val mostUsedApp = usageStatsList.maxByOrNull { it.totalTimeInForeground }
         val leastUsedApp = usageStatsList.minByOrNull { it.totalTimeInForeground }
         val usageLimit = 60 * 60 * 1000

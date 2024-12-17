@@ -17,8 +17,10 @@ import com.example.checkid.view.fragment.EmptyFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.dialogFragment.PermissionRequestDialogFragment
 import com.example.checkid.view.fragment.LoginFragment
-import com.example.checkid.view.fragment.SettingsFragment
+/*import com.example.checkid.view.fragment.SettingsFragment
+*/
 import com.example.checkid.viewmodel.LoginViewModel
+
 import com.example.checkid.viewmodel.LoginViewModelFactory
 
 import com.google.firebase.database.FirebaseDatabase
@@ -65,8 +67,13 @@ class MainActivity : AppCompatActivity(), PermissionRequestDialogFragment.Permis
                 R.id.page_home -> replaceFragment(ReportFragment())
                 R.id.page_statistics -> replaceFragment(StatisticsFragment())
                 R.id.page_notification -> replaceFragment(NotificationFragment())
+            /*
                 R.id.page_setting -> replaceFragment(SettingsFragment())
+
+             */
                 else -> false
+
+
             }
         }
     }
