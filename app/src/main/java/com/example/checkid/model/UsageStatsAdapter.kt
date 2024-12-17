@@ -78,8 +78,6 @@ class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
     }
 }
 
-
-// Extension function to convert UsageStats to UsageStatsData
 fun UsageStats.toUsageStatsData(): UsageStatsData {
     return UsageStatsData(
         packageName = this.packageName,

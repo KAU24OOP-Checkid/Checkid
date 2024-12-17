@@ -1,4 +1,5 @@
 package com.example.checkid.view.fragment
+import com.example.checkid.toUsageStatsData
 
 import android.app.usage.UsageStats
 import android.os.Bundle
@@ -44,7 +45,8 @@ class ReportFragment : Fragment() {
     /*
     private fun setupObservers() {
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
-            usageStatsAdapter.updateUsageStats(usageStatsList)
+            val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
+            usageStatsAdapter.updateUsageStats(usageStatsDataList)
             updateChart(usageStatsList)
         }
     }
