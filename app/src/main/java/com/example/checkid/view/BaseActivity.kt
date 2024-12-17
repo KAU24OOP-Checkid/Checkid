@@ -38,7 +38,7 @@ open class BaseActivity : AppCompatActivity() {
         hideNavigationBar()
 
         lifecycleScope.launch {
-            login()
+            // login()
             // permission()
             startActivity()
         }
@@ -77,7 +77,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private suspend fun waitUntil(condition: () -> Boolean) {
         while (!condition()) {
-            delay(100000)
+            delay(100)
         }
     }
 
