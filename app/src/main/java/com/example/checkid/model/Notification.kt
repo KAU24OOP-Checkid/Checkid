@@ -1,7 +1,5 @@
 package com.example.checkid.model
 
-import ParentUser
-import User
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,10 +9,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.checkid.R
-import com.example.checkid.model.NotificationRepository.addNotification
 import com.example.checkid.model.UserRepository.getUserById
-import com.example.checkid.model.UserRepository.isParent
-import com.example.checkid.view.BaseActivity
+import com.example.checkid.view.activity.MainActivity
 import kotlinx.coroutines.runBlocking
 
 class Notification (
@@ -103,7 +99,7 @@ object NotificationChannelManager {
     fun sendNotification(context: Context, channelId: String, notificationType: NotificationType, textContent: String) {
         val notification: Notification = Notification(notificationType, textContent)
 
-        val intent = Intent(context, BaseActivity::class.java).apply {
+        val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("openFragment", "NotificationFragment")
         }

@@ -4,14 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:id="@+id/activity_main_ConstraintLayout"
+    android:id="@+id/activity_Parent_ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible">
+    android:visibility = "visible">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/activity_base_FragmentContainerView"
-        android:name="com.example.checkid.view.fragment.EmptyFragment"
+        android:id="@+id/activity_main_fragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationMenu"
@@ -19,30 +18,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- BottomNavigationView -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemBackground="@color/Checkid_Yellow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_navigation_menu_parent" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

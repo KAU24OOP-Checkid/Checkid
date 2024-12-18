@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     alias(libs.plugins.google.gms.google.services)
-
 }
 
 android {
@@ -25,12 +24,17 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                isIncludeCompileClasspath()
+            }
+        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
 
     buildTypes {
         release {
@@ -84,6 +88,7 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.auth.ktx)
@@ -125,11 +130,9 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
-
-
 }
 
-
+// build.gradle.kts (프로젝트 레벨)
 
 buildscript {
     repositories {

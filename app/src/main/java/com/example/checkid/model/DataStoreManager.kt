@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
@@ -67,11 +68,14 @@ object DataStoreManager {
         }
     }
 
-    fun getUserType(context: Context): String {
-        return runBlocking{
-            context.dataStore.data.map { preferences ->
-                preferences[KEY_USER_TYPE] ?: "null"
-            }.first()
+    fun getUserTypeSync(context: Context): String? {
+        return runBlocking {
+            context.dataStore.data.firstOrNull()?.get(KEY_USER_TYPE)
         }
+    }
+
+    suspend fun getUserType(context: Context): String {
+        val preferences = context.dataStore.data.first()
+        return preferences[KEY_USER_TYPE] ?: "Parent"
     }
 }
