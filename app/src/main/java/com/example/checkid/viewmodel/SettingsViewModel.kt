@@ -1,15 +1,20 @@
 package com.example.checkid.viewmodel
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.Location
 import com.example.checkid.model.LocationRepository
 import com.example.checkid.model.TimeSettingRepository
+import com.example.checkid.model.UserRepository
 import kotlinx.coroutines.launch
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(context: Context) : ViewModel() {
 
     private val _location = MutableLiveData<Location?>()
     val location: LiveData<Location?> get() = _location
@@ -22,6 +27,28 @@ class SettingsViewModel : ViewModel() {
 
     private val _selectedTime = MutableLiveData<String?>()
     val selectedTime: LiveData<String?> get() = _selectedTime
+
+    // LiveData for ParentUser PartnerId
+    private val _partnerId = MutableLiveData<String?>()
+    val partnerId: LiveData<String?> get() = _partnerId
+
+    private val _userId = MutableLiveData<String>()
+    val userId: LiveData<String> get() = _userId
+
+    suspend fun fetchUserId(context: Context) {
+        val id = DataStoreManager.getUserId(context)
+        val user = UserRepository.getUserById(id)
+
+        _userId.postValue(user?.id)
+    }
+
+    suspend fun fetchPartnerUserId(context: Context) {
+        val id = DataStoreManager.getUserId(context)
+        val user = UserRepository.getUserById(id)
+
+        Log.d("SettingsViewModel", "${user?.partnerId}")
+        _partnerId.postValue(user?.partnerId)
+    }
 
     fun fetchChildLocation(childId: String) {
         viewModelScope.launch {
@@ -43,13 +70,9 @@ class SettingsViewModel : ViewModel() {
             val success = TimeSettingRepository.saveTimeSetting(time)
             if (success) {
                 _selectedTime.value = time
-            } else {
-                _errorMessage.value = "시간 설정에 실패했습니다."
             }
         }
     }
-
-
 
     fun clearErrorMessage() {
         _errorMessage.value = null
@@ -60,9 +83,17 @@ class SettingsViewModel : ViewModel() {
         TimeSettingRepository.listenTimeSetting { time ->
             if (time != null) {
                 _selectedTime.postValue(time)
-            } else {
-                _errorMessage.postValue("시간 정보를 불러올 수 없습니다.")
             }
         }
+    }
+}
+
+class SettingsViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    override fun <T: ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
+            return SettingsViewModel(context) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class : ${modelClass.name}")
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
+import com.example.checkid.model.NotificationChannelManager
 import com.example.checkid.view.fragment.AppFragment
 import com.example.checkid.view.fragment.LoginFragment
 import com.example.checkid.view.fragment.NotificationFragment
@@ -63,6 +64,7 @@ open class MainActivity : AppCompatActivity()  {
             else {
                 val userType = withContext(Dispatchers.IO) {loginViewModel.getUserType(applicationContext)}
 
+                NotificationChannelManager.createNotificationChannel(applicationContext)
                 bindNavigationMenu(userType)
             }
         }

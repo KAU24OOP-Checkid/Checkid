@@ -122,6 +122,6 @@ object NotificationChannelManager {
             .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(context)
-        // notificationManager.notify(notificationType.ordinal, builder.build())
+        notificationManager.notify(notificationType.ordinal, builder.build())
     }
 }

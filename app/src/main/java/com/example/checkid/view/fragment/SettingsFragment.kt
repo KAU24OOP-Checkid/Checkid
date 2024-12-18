@@ -6,21 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.checkid.R
 import com.example.checkid.databinding.FragmentSettingsBinding
 import com.example.checkid.view.dialogFragment.TimeDialogFragment
-import com.example.checkid.viewmodel.SharedViewModel
+import com.example.checkid.viewmodel.SettingsViewModel
+import com.example.checkid.viewmodel.SettingsViewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var sharedViewModel: SharedViewModel
+    private val viewModel: SettingsViewModel by viewModels() {
+        SettingsViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,37 +41,35 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _binding = FragmentSettingsBinding.bind(view)
 
-        // ViewModel 초기화
-        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
-
         // LiveData 관찰 및 UI 업데이트
-        sharedViewModel.parentUserId.observe(viewLifecycleOwner) { id ->
-            binding.tvAccountInfo.text = "ParentUser ID: $id"
+        viewModel.userId.observe(viewLifecycleOwner) { id ->
+            binding.tvAccountInfo.text = "My ID: $id"
         }
 
-        sharedViewModel.partnerId.observe(viewLifecycleOwner) { pid ->
-            binding.tvPartnerId.text = "Partner ID: $pid"
+        viewModel.partnerId.observe(viewLifecycleOwner) { partnerId ->
+            binding.tvPartnerId.text = "Partner ID: $partnerId"
         }
 
         // Account Info 버튼 클릭 리스너
         binding.btnAccountInfo.setOnClickListener {
             lifecycleScope.launch {
-                sharedViewModel.fetchParentUserId()
+                viewModel.fetchUserId(requireContext())
             }
         }
 
         // Account Connect 버튼 클릭 리스너
         binding.btnAccountConnect.setOnClickListener {
             lifecycleScope.launch {
-                sharedViewModel.fetchPartnerId()
+                viewModel.fetchPartnerUserId(requireContext())
             }
         }
 
         // Map Fragment로 이동 버튼 클릭 리스너
         binding.btnOpenMap.setOnClickListener {
-            findNavController().navigate(R.id.action_settingsFragment_to_mapsFragment)
+           // findNavController().navigate(R.id.action_settingsFragment_to_mapsFragment)
         }
 
         // 시간 설정 버튼 클릭 리스너 설정
