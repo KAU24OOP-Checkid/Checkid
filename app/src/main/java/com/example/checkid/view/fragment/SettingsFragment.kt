@@ -1,6 +1,7 @@
 package com.example.checkid.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.checkid.R
 import com.example.checkid.databinding.FragmentSettingsBinding
+import com.example.checkid.model.TimeSettingRepository
 import com.example.checkid.view.dialogFragment.TimeDialogFragment
 import com.example.checkid.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
@@ -70,7 +72,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.btnSetTime.setOnClickListener {
             // TimeDialogFragment 열기
             val timeDialog = TimeDialogFragment()
-            timeDialog.show(parentFragmentManager, "TimeDialogFragment")
+            timeDialog.show(childFragmentManager, "TimeDialogFragment")
         }
 
         // Fragment Result API를 사용하여 TimeDialogFragment로부터 결과 받기
@@ -81,7 +83,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             if (requestKey == TimeDialogFragment.REQUEST_KEY) {
                 val selectedHour = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_HOUR)
                 val selectedMinute = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_MINUTE)
+                Log.d("SettingsFragment", "Result received: Hour=$selectedHour, Minute=$selectedMinute")
                 onTimeSelected(selectedHour, selectedMinute)
+            }else {
+                Log.d("SettingsFragment", "Unexpected requestKey: $requestKey")
             }
         }
     }
@@ -96,7 +101,18 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         // UI 업데이트
         binding.tvSelectedTime.text = "선택된 시간: $selectedTime"
         Toast.makeText(requireContext(), "시간 설정됨: $selectedTime", Toast.LENGTH_SHORT).show()
+
+        // Firestore에 시간 저장
+        lifecycleScope.launch {
+            val isSaved = TimeSettingRepository.saveTimeSetting(selectedTime)
+            if (isSaved) {
+                Log.d("SettingsFragment", "시간 데이터 Firestore에 저장 완료")
+            } else {
+                Log.e("SettingsFragment", "시간 데이터 Firestore에 저장 실패")
+            }
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

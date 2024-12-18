@@ -1,6 +1,7 @@
 package com.example.checkid.view.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ import com.example.checkid.view.fragment.TestFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
 import com.example.checkid.viewmodel.PermissionViewModel
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,7 +38,7 @@ open class MainActivity : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        FirebaseApp.initializeApp(this) // Firebase 초기화
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val view = binding.root
@@ -44,6 +47,25 @@ open class MainActivity : AppCompatActivity()  {
         hideNavigationBar()
 
         check()
+        listenFirestoreData() // Firestore 실시간 리스너 호출 로그 확인용
+    }
+    // Firestore에서 실시간 데이터 업데이트 확인
+    private fun listenFirestoreData() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("TimeSettings").document("shared_time")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.e("MainActivity", "Firestore 리스너 오류: ${e.message}")
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    val time = snapshot.getString("selected_time")
+                    Log.d("MainActivity", "Firestore에서 업데이트된 시간: $time")
+                } else {
+                    Log.d("MainActivity", "Firestore 문서가 존재하지 않습니다.")
+                }
+            }
     }
 
     fun check() {
