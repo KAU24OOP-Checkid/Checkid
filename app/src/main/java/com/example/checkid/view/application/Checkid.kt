@@ -11,12 +11,5 @@ class Checkid : Application() {
         super.onCreate()
 
         FirebaseApp.initializeApp(this)
-
-        GlobalScope.launch {
-            DataStoreManager.setUserId(applicationContext, "parent")
-            DataStoreManager.setUserType(applicationContext, "Parent")
-            DataStoreManager.setUserPartnerId(applicationContext, "")
-        }
-
     }
 }

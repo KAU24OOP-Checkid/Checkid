@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_home"
+        android:id="@+id/page_report"
         android:enabled="true"
         android:icon="@drawable/ic_report"
         android:title="@string/bottom_navigation_view_button1"/>

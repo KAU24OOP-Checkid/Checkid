@@ -1,7 +1,6 @@
 package com.example.checkid.view.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,7 @@ import com.example.checkid.view.fragment.PermissionFragment
 import com.example.checkid.view.fragment.ReportFragment
 import com.example.checkid.view.fragment.SettingsFragment
 import com.example.checkid.view.fragment.StatisticsFragment
+import com.example.checkid.view.fragment.TestFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
 import com.example.checkid.viewmodel.PermissionViewModel
@@ -41,18 +41,6 @@ open class MainActivity : AppCompatActivity()  {
         val view = binding.root
 
         setContentView(view)
-
-        binding.bottomNavigationMenu.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.page_home -> replaceFragment(ReportFragment())
-                R.id.page_statistics -> replaceFragment(StatisticsFragment())
-                R.id.page_notification -> replaceFragment(NotificationFragment())
-                R.id.page_setting -> replaceFragment(SettingsFragment())
-            }
-
-            true
-        }
-
         hideNavigationBar()
 
         check()
@@ -60,9 +48,9 @@ open class MainActivity : AppCompatActivity()  {
 
     fun check() {
         lifecycleScope.launch {
-            val isLogin = withContext(Dispatchers.IO) { loginViewModel.isLogin(applicationContext)}
+            val isLogin = withContext(Dispatchers.IO) { loginViewModel.isLogin(applicationContext) }
 
-            val hasPermission = withContext(Dispatchers.IO) {permissionViewModel.checkAllPermissions(applicationContext)}
+            val hasPermission = withContext(Dispatchers.IO) { permissionViewModel.checkAllPermissions(applicationContext) }
 
             if (!isLogin) {
                 replaceFragment(LoginFragment())
@@ -75,17 +63,7 @@ open class MainActivity : AppCompatActivity()  {
             else {
                 val userType = withContext(Dispatchers.IO) {loginViewModel.getUserType(applicationContext)}
 
-                if (userType == "Parent") {
-                    replaceFragment(ReportFragment())
-                    setNavigationMenu(true)
-                    showNavigationBar()
-                }
-
-                else {
-                    replaceFragment(AppFragment())
-                    setNavigationMenu(false)
-                    showNavigationBar()
-                }
+                bindNavigationMenu(userType)
             }
         }
     }
@@ -99,8 +77,8 @@ open class MainActivity : AppCompatActivity()  {
         return true
     }
 
-    private fun setNavigationMenu(isParent: Boolean) {
-        val menuId = if (isParent) {
+    private fun bindNavigationMenu(userType: String) {
+        val menuId = if(userType == "Parent") {
             R.menu.bottom_navigation_menu_parent
         }
 
@@ -110,12 +88,43 @@ open class MainActivity : AppCompatActivity()  {
 
         binding.bottomNavigationMenu.menu.clear()
         binding.bottomNavigationMenu.inflateMenu(menuId)
+
+        if (userType == "Parent") {
+            binding.bottomNavigationMenu.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.page_report -> replaceFragment(ReportFragment())
+                    R.id.page_statistics -> replaceFragment(StatisticsFragment())
+                    R.id.page_notification -> replaceFragment(NotificationFragment())
+                    R.id.page_setting -> replaceFragment(SettingsFragment())
+                }
+
+                true
+            }
+
+            replaceFragment(ReportFragment())
+        }
+
+        else {
+            binding.bottomNavigationMenu.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.page_app -> replaceFragment(AppFragment())
+                    R.id.page_test -> replaceFragment(TestFragment())
+                    R.id.page_notification -> replaceFragment(NotificationFragment())
+                    R.id.page_setting -> replaceFragment(SettingsFragment())
+                }
+
+                true
+            }
+
+            replaceFragment(AppFragment())
+        }
+
+        showNavigationBar()
     }
 
     private fun hideNavigationBar() {
         supportActionBar?.hide()
         binding.bottomNavigationMenu.visibility = View.GONE
-
     }
 
     fun showNavigationBar() {
