@@ -33,10 +33,6 @@
     <string name="bottom_navigation_view_button3_child">알림</string>
     <string name="bottom_navigation_view_button4_child">설정</string>
 
-
-
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
@@ -45,7 +41,7 @@
     <string name="most_used_app_text">가장 많이 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
     <string name="least_used_app_text">가장 적게 사용된 애플리케이션: %1$s, 사용 시간: %2$s</string>
     <string name="times_over_limit_text">기준 시간 초과 횟수: %1$d</string>
-
+    <string name="usage_stats_open_setting_button">usageStatsManager</string>
 
 
 </resources>

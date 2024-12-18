@@ -1,23 +1,17 @@
 package com.example.checkid.view.dialogFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
+import com.example.checkid.view.activity.MainActivity
 
 
 class LoginIsSuccessDialogFragment : DialogFragment() {
     private var _binding: DialogFragmentLoginIsSuccessBinding? = null
     private val binding get() = _binding!!
-
-    interface OnDialogButtonClickListener {
-        fun onDialogButtonClick()
-    }
-
-    private var listener: OnDialogButtonClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,16 +25,10 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fragment = parentFragment
-
         binding.loginIsSuccessButton.setOnClickListener {
             dismiss()
 
-            if (fragment != null) {
-                parentFragmentManager.beginTransaction()
-                    .remove(fragment)
-                    .commit()
-            }
+            (activity as? MainActivity)?.check()
         }
     }
 

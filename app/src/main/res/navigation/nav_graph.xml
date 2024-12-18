@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/settingsFragment">
+
+    <!-- SettingsFragment 정의 -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.checkid.view.fragment.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment">
+
+        </action>
+    </fragment>
+
+    <!-- MapsFragment 정의 -->
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.checkid.view.fragment.MapsFragment"
+        android:label="MapsFragment"
+        tools:layout="@layout/fragment_maps">
+    </fragment>
+
+</navigation>

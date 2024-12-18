@@ -1,4 +1,5 @@
 package com.example.checkid.view.fragment
+import com.example.checkid.toUsageStatsData
 
 import android.app.usage.UsageStats
 import android.os.Bundle
@@ -28,7 +29,7 @@ class ReportFragment : Fragment() {
     ): View {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         setupRecyclerView()
-        // setupObservers()
+        setupObservers()
         reportViewModel.loadUsageStats()
         return binding.root
     }
@@ -41,15 +42,14 @@ class ReportFragment : Fragment() {
         }
     }
 
-    /*
     private fun setupObservers() {
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
-            usageStatsAdapter.updateUsageStats(usageStatsList)
+            val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
+            usageStatsAdapter.updateUsageStats(usageStatsDataList)
             updateChart(usageStatsList)
         }
     }
 
-     */
 
     private fun updateChart(usageStatsList: List<UsageStats>) {
         val totalUsage = usageStatsList.sumOf { it.totalTimeInForeground }

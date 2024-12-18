@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,12 +18,16 @@ import com.example.checkid.model.NotificationRepository.notifications
 import com.example.checkid.model.NotificationType
 import com.example.checkid.viewmodel.NotificationViewModel
 import androidx.recyclerview.widget.DiffUtil
+import com.example.checkid.viewmodel.NotificationViewModelFactory
+import kotlinx.coroutines.launch
 
 class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private var _binding : FragmentNotificationBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: NotificationViewModel by viewModels()
+    private val viewModel: NotificationViewModel by viewModels() {
+        NotificationViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +35,10 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+
+        lifecycleScope.launch{
+            viewModel.loadNotifications(requireContext())
+        }
         return binding.root
     }
 
@@ -48,7 +57,7 @@ class NotificationFragment() : Fragment(R.layout.fragment_notification) {
     private fun setupRecyclerView() {
         val adapter = NotificationAdapter(notifications,
             onDeleteClick = { position ->
-                viewModel.deleteNotificationInstance(position)
+                viewModel.deleteNotificationInstance(requireContext(), position)
             }
         )
 
@@ -117,6 +126,5 @@ class NotificationAdapter(
     fun updateData(newNotifications: List<Notification>) {
         notifications = newNotifications
         notifyDataSetChanged()
-
     }
 }

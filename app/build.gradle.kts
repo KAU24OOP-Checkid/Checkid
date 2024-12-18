@@ -88,6 +88,10 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.auth.ktx)
 
     testImplementation(libs.junit)
 
@@ -113,9 +117,12 @@ dependencies {
     // implementation(libs.google.maps)
     implementation(libs.androidx.preference)
     implementation(libs.google.play.services.maps)
+    implementation(libs.play.services.location)
+
 
     // FireBase 관련 dependency
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.database)
 

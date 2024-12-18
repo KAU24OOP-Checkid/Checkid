@@ -2,19 +2,22 @@ package com.example.checkid.service
 
 import android.app.Service
 import android.content.Intent
-import android.location.Location
 import android.os.IBinder
 import android.util.Log
 import com.example.checkid.model.Location as ChildLocation
 import com.example.checkid.utils.FirebaseHelper
-import com.google.android.gms.location.*
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.os.Looper
 
 class LocationService : Service() {
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val TAG = "LocationService"
     private val childId = "child1" // 실제 자녀 ID로 변경 필요
@@ -42,7 +45,10 @@ class LocationService : Service() {
             }
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
+        //런타임 위치 권한을 체크해야함
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+
     }
 
     override fun onBind(intent: Intent?): IBinder? {
