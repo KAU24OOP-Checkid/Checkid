@@ -112,14 +112,6 @@ object UserRepository {
         }
     }
 
-    fun isParent(user: User): Boolean? {
-        return when (user) {
-            is ParentUser -> true
-            is ChildUser -> false
-            else -> null
-        }
-    }
-
     fun getUserType(user: User): String? {
         return when (user) {
             is ParentUser -> "Parent"

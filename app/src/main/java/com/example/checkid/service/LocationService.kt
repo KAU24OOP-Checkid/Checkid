@@ -1,10 +1,7 @@
-/*
 package com.example.checkid.service
-
 
 import android.app.Service
 import android.content.Intent
-import android.location.Location
 import android.os.IBinder
 import android.util.Log
 import com.example.checkid.model.Location as ChildLocation
@@ -51,4 +48,3 @@ class LocationService : Service() {
         return null
     }
 }
-*/

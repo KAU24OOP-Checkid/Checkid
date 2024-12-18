@@ -1,6 +1,8 @@
 package com.example.checkid.viewmodel
 
+import ParentUser
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +34,8 @@ class LoginViewModel(context: Context) : ViewModel() {
             val user = withContext(Dispatchers.IO) {
                 UserRepository.getUserByIdAndPassword(id, password)
             }
+
+            Log.d("ViewModel", "${user is ParentUser}}")
 
             if (user != null) {
                 val userType = UserRepository.getUserType(user) ?: "Child"

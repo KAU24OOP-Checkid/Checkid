@@ -1,4 +1,4 @@
-/*package com.example.checkid.view.fragment
+package com.example.checkid.view.fragment
 
 import android.Manifest
 import android.content.Intent
@@ -57,6 +57,3 @@ class SettingsFragment : PreferenceFragmentCompat() {
         ContextCompat.startForegroundService(requireContext(), intent)
     }
 }
-
-
- */

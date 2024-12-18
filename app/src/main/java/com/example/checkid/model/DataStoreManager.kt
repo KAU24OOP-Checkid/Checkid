@@ -26,12 +26,10 @@ object DataStoreManager {
         }
     }
 
-    fun getIsLogin(context: Context): Boolean {
-        return runBlocking {
-            context.dataStore.data.map { preferences ->
-                (preferences[KEY_USER_LOGIN] ?: 0) == 1
-            }.first()
-        }
+    suspend fun getIsLogin(context: Context): Boolean {
+        return context.dataStore.data.map { preferences ->
+            (preferences[KEY_USER_LOGIN] ?: 0) == 1
+        }.first()
     }
 
     suspend fun setUserId(context: Context, id: String) {
@@ -40,12 +38,10 @@ object DataStoreManager {
         }
     }
 
-    fun getUserId(context: Context): String {
-        return runBlocking {
-            context.dataStore.data.map { preferences ->
+    suspend fun getUserId(context: Context): String {
+        return context.dataStore.data.map { preferences ->
                 preferences[KEY_USER_ID] ?: ""
-            }.first()
-        }
+        }.first()
     }
 
     suspend fun setUserPartnerId(context: Context, id: String) {
@@ -54,28 +50,21 @@ object DataStoreManager {
         }
     }
 
-    fun getUserPartnerId(context: Context): String {
-        return runBlocking {
-            context.dataStore.data.map { preferences ->
+    suspend fun getUserPartnerId(context: Context): String {
+        return context.dataStore.data.map { preferences ->
                 preferences[KEY_USER_PARTNER_ID] ?: ""
-            }.first()
-        }
+        }.first()
     }
 
     suspend fun setUserType(context: Context, userType: String) {
         context.dataStore.edit { preferences ->
-            preferences[KEY_USER_TYPE] = if (userType == "Parent") "Parent" else "Child"
-        }
-    }
-
-    fun getUserTypeSync(context: Context): String? {
-        return runBlocking {
-            context.dataStore.data.firstOrNull()?.get(KEY_USER_TYPE)
+            preferences[KEY_USER_TYPE] = userType
         }
     }
 
     suspend fun getUserType(context: Context): String {
-        val preferences = context.dataStore.data.first()
-        return preferences[KEY_USER_TYPE] ?: "Parent"
+        return context.dataStore.data.map { preferences ->
+                preferences[KEY_USER_TYPE] ?: ""
+        }.first()
     }
 }
