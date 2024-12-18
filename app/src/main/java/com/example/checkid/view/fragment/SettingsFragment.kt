@@ -1,4 +1,4 @@
-/*package com.example.checkid.view.fragment
+package com.example.checkid.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +31,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         return binding.root
     }
 
-    // 단일 onViewCreated 메서드로 통합
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSettingsBinding.bind(view)
