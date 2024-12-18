@@ -80,9 +80,14 @@ class SettingsViewModel(context: Context) : ViewModel() {
 
     // Firestore 실시간 리스너 설정
     fun listenToTimeSetting() {
-        TimeSettingRepository.listenTimeSetting { time ->
-            if (time != null) {
-                _selectedTime.postValue(time)
+        viewModelScope.launch {
+            TimeSettingRepository.listenTimeSetting { time ->
+                if (time != null) {
+                    _selectedTime.postValue(time)
+                } else {
+                    _errorMessage.postValue("시간 정보를 불러올 수 없습니다.")
+                }
+
             }
         }
     }

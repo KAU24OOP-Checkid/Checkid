@@ -2,6 +2,7 @@ package com.example.checkid.view.dialogFragment
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -43,6 +44,7 @@ class TimeDialogFragment : DialogFragment() {
                     putInt(BUNDLE_KEY_MINUTE, selectedMinute)
                 }
                 setFragmentResult(REQUEST_KEY, result)
+                Log.d("TimeDialogFragment", "Result set: Hour=$selectedHour, Minute=$selectedMinute")
             }
             .setNegativeButton("취소") { dialog, which ->
                 dialog.dismiss()

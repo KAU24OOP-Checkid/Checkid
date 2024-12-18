@@ -2,6 +2,7 @@
 
 package com.example.checkid.model
 
+import com.google.api.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -50,12 +51,14 @@ object TimeSettingRepository {
         }
     }
 
+
     /**
      * Firestore 실시간 리스너를 통해 시간 설정을 실시간으로 받아옵니다.
      * @param onTimeUpdate 시간 업데이트 시 호출되는 콜백
      */
-    fun listenTimeSetting(onTimeUpdate: (String?) -> Unit) {
+    suspend fun listenTimeSetting(onTimeUpdate: (String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
+        //val id = DataStoreManager
         db.collection(COLLECTION).document("shared_time")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
@@ -71,4 +74,22 @@ object TimeSettingRepository {
                 }
             }
     }
+    /**
+     * 저장된 시간 문자열을 파싱하여 시간과 분을 반환합니다.
+     * @param time "HH:mm" 형식의 시간 문자열
+     * @return Pair<Int, Int>? (시간, 분) 또는 null
+     */
+    fun parseTimeSetting(time: String?): Pair<Int, Int>? {
+        return try {
+            time?.split(":")?.let {
+                val hour = it[0].toInt()
+                val minute = it[1].toInt()
+                Pair(hour, minute)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }
