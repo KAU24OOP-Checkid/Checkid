@@ -1,14 +1,19 @@
 package com.example.checkid.view.fragment
 
 import android.Manifest
+import android.app.AppOpsManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -57,6 +62,7 @@ class PermissionFragment: Fragment(R.layout.fragment_permission) {
             }
         }
 
+        requestUsageStatsPermission(requireContext())
         requestPermissions()
 
         binding.permissionsTextView.text = permissions.joinToString("\n") { permission ->
@@ -71,6 +77,10 @@ class PermissionFragment: Fragment(R.layout.fragment_permission) {
             viewModel.openAppSettings(requireContext())
         }
 
+        binding.openUsageStatsSettingsButton.setOnClickListener {
+            viewModel.openUsageStatsSettings(requireContext())
+        }
+
         val view = binding.root
         return view
     }
@@ -82,6 +92,8 @@ class PermissionFragment: Fragment(R.layout.fragment_permission) {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPermissions() {
+
+
         val missingPermissions = PermissionManager.getAllPermissions().filter { permission ->
             requireContext().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED
         }
@@ -89,5 +101,21 @@ class PermissionFragment: Fragment(R.layout.fragment_permission) {
         if (missingPermissions.isNotEmpty()) {
             requestPermissionsLauncher.launch(missingPermissions.toTypedArray())
         }
+    }
+
+    fun hasUsageStatsPermission(context: Context): Boolean {
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOpsManager.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            context.packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
+
+    fun requestUsageStatsPermission(context: Context) {
+        val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
     }
 }
