@@ -30,7 +30,21 @@ class Notification (
         NotificationType.WARNING -> "경고"
         else -> ""
     }
+}
 
+data class NotificationDTO(
+    val notificationType: String = "",
+    val textContent: String = "",
+    val textTitle: String = ""
+)
+
+fun NotificationDTO.toNotification(): Notification {
+    return Notification(
+        notificationType = NotificationType.fromValue(this.notificationType),
+        textContent = this.textContent
+    ).apply {
+        textTitle = this@toNotification.textTitle
+    }
 }
 
 enum class NotificationType(val value: Int) {
@@ -42,6 +56,14 @@ enum class NotificationType(val value: Int) {
     companion object {
         fun fromValue(value: Int): NotificationType {
             return entries.find { it.value == value } ?: SYSTEM
+        }
+
+        fun fromValue(value: String): NotificationType {
+            return when (value) {
+                "REPORT" -> REPORT
+                "WARNING" -> WARNING
+                else -> SYSTEM
+            }
         }
     }
 }
@@ -134,7 +156,7 @@ object NotificationChannelManager {
         notificationManager.notify(notificationId, builder.build())
 
         withContext(Dispatchers.IO) {
-            addNotification(notification, user.id)
+            addNotification(id = user.id, notification = notification)
         }
     }
 }
