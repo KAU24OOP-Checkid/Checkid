@@ -1,4 +1,4 @@
-import com.example.checkid.model.UsageStatsAdapter
+import com.example.checkid.view.fragment.UsageStatsAdapter
 
 open class  User(
     val id: String,

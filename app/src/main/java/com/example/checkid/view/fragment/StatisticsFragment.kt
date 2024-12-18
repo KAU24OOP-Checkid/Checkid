@@ -85,7 +85,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.checkid.databinding.FragmentStatisticsBinding
-import com.example.checkid.model.UsageStatsAdapter
 import com.example.checkid.viewmodel.StatisticsViewModel
 import com.example.checkid.processor.UsageStatisticsProcessor
 import com.example.checkid.viewmodel.StatisticsViewModelFactory
