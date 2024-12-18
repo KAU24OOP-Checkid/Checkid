@@ -32,21 +32,12 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="35">
 
-        <receiver
-            android:name="com.example.checkid.receiver.MyReceiver"
-            android:exported="false">
-            <intent-filter>
-                    <action android:name = "LOGIN_SUCCESS" />
-                    <action android:name = "PERMISSION_SUCCESS" />
-            </intent-filter>
-        </receiver>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCBHCOLBY9rf4XqGblwRjA_zOnc4_TlRl4" />
 
         <activity
-            android:name=".view.activity.BaseActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Checkid">
@@ -55,20 +46,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--ChildActivity -->
-        <activity
-            android:name=".view.activity.ChildActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Checkid">
-        </activity>
-
-        <!--ParentActivity -->
-        <activity
-            android:name=".view.activity.ParentActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Checkid">
         </activity>
 
     </application>

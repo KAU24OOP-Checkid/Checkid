@@ -10,6 +10,7 @@ import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(context: Context) : ViewModel() {
@@ -21,7 +22,9 @@ class LoginViewModel(context: Context) : ViewModel() {
     }
 
     fun isLogin(context: Context): Boolean {
-        return DataStoreManager.getIsLogin(context)
+        return runBlocking(Dispatchers.IO) {
+            DataStoreManager.getIsLogin(context)
+        }
     }
 
     fun login(context: Context, id: String, password: String) {

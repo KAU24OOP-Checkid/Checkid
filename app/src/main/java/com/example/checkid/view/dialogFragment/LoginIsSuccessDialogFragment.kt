@@ -1,14 +1,12 @@
 package com.example.checkid.view.dialogFragment
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
+import com.example.checkid.view.activity.MainActivity
 
 
 class LoginIsSuccessDialogFragment : DialogFragment() {
@@ -30,11 +28,7 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
         binding.loginIsSuccessButton.setOnClickListener {
             dismiss()
 
-            val intent = Intent().apply {
-                action = "LOGIN_SUCCESS"
-                putExtra("RESULT", "LOGIN_SUCCESS")
-            }
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+            (activity as? MainActivity)?.check()
         }
     }
 
