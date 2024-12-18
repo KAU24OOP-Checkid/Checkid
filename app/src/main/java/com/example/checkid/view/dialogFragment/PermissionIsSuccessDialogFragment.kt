@@ -1,25 +1,18 @@
 package com.example.checkid.view.dialogFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.checkid.databinding.DialogFragmentPermissionIsSuccessBinding
 
 
 class PermissionIsSuccessDialogFragment: DialogFragment() {
     private var _binding: DialogFragmentPermissionIsSuccessBinding? = null
     private val binding get() = _binding!!
-    private var listener : PermissionGrantedListener? = null
-
-    interface PermissionGrantedListener {
-        fun onPermissionGranted()
-    }
-
-    fun setPermissionListener(listener: PermissionGrantedListener) {
-        this.listener = listener
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,16 +26,14 @@ class PermissionIsSuccessDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fragment = parentFragment
-
         binding.permissionIsSuccessButton.setOnClickListener {
             dismiss()
 
-            if (fragment != null) {
-                parentFragmentManager.beginTransaction()
-                    .remove(fragment)
-                    .commit()
+            val intent = Intent().apply {
+                action = "PERMISSION_SUCCESS"
+                putExtra("RESULT", "PERMISSION_SUCCESS")
             }
+            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
         }
     }
 

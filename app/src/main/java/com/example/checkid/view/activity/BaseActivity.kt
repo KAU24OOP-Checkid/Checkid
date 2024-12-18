@@ -1,27 +1,27 @@
 package com.example.checkid.view.activity
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityBaseBinding
-import com.example.checkid.model.DataStoreManager
+import com.example.checkid.receiver.MyReceiver
 import com.example.checkid.view.fragment.LoginFragment
 import com.example.checkid.view.fragment.PermissionFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
 import com.example.checkid.viewmodel.PermissionViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
+import kotlinx.coroutines.withContext
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity()  {
     private lateinit var binding: ActivityBaseBinding
 
     private val loginViewModel: LoginViewModel by viewModels() {
@@ -29,6 +29,16 @@ open class BaseActivity : AppCompatActivity() {
     }
     private val permissionViewModel: PermissionViewModel by viewModels()
 
+    private val receiver = MyReceiver { action ->
+        when (action) {
+            "LOGIN_SUCCESS" -> {
+                check() // LOGIN_SUCCESS 처리
+            }
+            "PERMISSION_SUCCESS" -> {
+                check() // PERMISSION_SUCCESS 처리
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,56 +50,47 @@ open class BaseActivity : AppCompatActivity() {
         setContentView(view)
         hideNavigationBar()
 
-        startActivity()
+        val intentFilter = IntentFilter().apply {
+            addAction("LOGIN_SUCCESS")
+            addAction("PERMISSION_SUCCESS")
+        }
 
-        /*
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter)
+
+        check() // 마지막에 있어야 한다.
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
+    }
+
+    private fun check() {
         lifecycleScope.launch {
-            if (login()) {
-                if (permission()) {
-                    startActivity()
+            val isLogin = withContext(Dispatchers.IO) {
+                loginViewModel.isLogin(applicationContext)
+            }
+
+            val hasPermission = withContext(Dispatchers.IO) {
+                permissionViewModel.checkAllPermissions(applicationContext)
+            }
+
+            withContext(Dispatchers.Main) {
+                when {
+                    !isLogin -> replaceFragment(LoginFragment())
+                    !hasPermission -> replaceFragment(PermissionFragment())
+                    else -> swapActivity()
                 }
             }
-        }
 
-         */
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private suspend fun login(): Boolean {
-        if (loginViewModel.isLogin(applicationContext)) {
-            return true
-        }
-
-        return suspendCancellableCoroutine { continuation ->
-            replaceFragment(LoginFragment())
-
-            lifecycleScope.launch {
-                val isLoggedIn = loginViewModel.loginResult.first {it}
-                closeFragment()
-                continuation.resume(true)
-            }
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private suspend fun permission():Boolean {
-        if(!permissionViewModel.checkAllPermissions(applicationContext)) {
-            return true
+    private suspend fun swapActivity() {
+        val userType = withContext(Dispatchers.IO) {
+            loginViewModel.getUserType(applicationContext)
         }
-
-        return suspendCancellableCoroutine { continuation ->
-            replaceFragment(PermissionFragment())
-
-            lifecycleScope.launch {
-                val isGranted = permissionViewModel.permissionResult.first {it}
-                closeFragment()
-                continuation.resume(true)
-            }
-        }
-    }
-
-    private fun startActivity():Boolean {
-        val userType = DataStoreManager.getUserTypeSync(applicationContext)
 
         val intent = when (userType) {
             "Parent" -> Intent(this, ParentActivity::class.java)
@@ -100,14 +101,7 @@ open class BaseActivity : AppCompatActivity() {
         intent?.let {
             startActivity(it)
             finish() // 현재 Activity 종료
-        } ?: run {
-            // 유저 타입이 비정상적일 경우 로그 또는 처리
-            println("User type is invalid or null")
-        }
-
-        finish()
-
-        return true
+        } ?: finish()
     }
 
     protected fun replaceFragment(fragment: Fragment) : Boolean {
@@ -117,12 +111,6 @@ open class BaseActivity : AppCompatActivity() {
             .commit()
 
         return true
-    }
-
-    private fun closeFragment() {
-        supportFragmentManager.findFragmentById(R.id.activity_base_FragmentContainerView)?.let {
-            supportFragmentManager.beginTransaction().remove(it).commit()
-        }
     }
 
     protected fun hideNavigationBar() {

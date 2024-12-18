@@ -2,7 +2,6 @@ package com.example.checkid.view.activity
 
 import android.os.Bundle
 
-
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityParentBinding
 import com.example.checkid.view.fragment.ReportFragment

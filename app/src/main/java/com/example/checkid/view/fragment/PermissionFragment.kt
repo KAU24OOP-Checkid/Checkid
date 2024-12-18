@@ -30,40 +30,24 @@ class PermissionFragment: Fragment(R.layout.fragment_permission) {
 
         val permissions = viewModel.getAllPermissions()
 
+        viewModel.permissionResult.observe(viewLifecycleOwner) { hasPermission ->
+            when (hasPermission) {
+                true -> PermissionIsSuccessDialogFragment().show(childFragmentManager, "SuccessDialog")
+                false -> PermissionIsFailDialogFragment().show(childFragmentManager, "FailDialog")
+                null -> {}
+            }
+        }
+
         binding.permissionsTextView.text = permissions.joinToString("\n") { permission ->
             "- $permission"
         }
 
         binding.checkPermissionButton.setOnClickListener {
-            if (viewModel.checkAllPermissions(requireContext())) {
-                PermissionIsSuccessDialogFragment().show(childFragmentManager, "")
-            }
-
-            else {
-                PermissionIsFailDialogFragment().show(childFragmentManager, "")
-            }
+            viewModel.checkAllPermissions(requireContext())
         }
 
         binding.openSettingsButton.setOnClickListener {
             viewModel.openAppSettings(requireContext())
-        }
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
-                viewModel.permissionResult.collect { isGranted ->
-                    if (isGranted) {
-                        PermissionIsSuccessDialogFragment().show(
-                            childFragmentManager,
-                            "PermissionSuccessDialog"
-                        )
-                    } else {
-                        PermissionIsFailDialogFragment().show(
-                            childFragmentManager,
-                            "PermissionFailDialog"
-                        )
-                    }
-                }
-            }
         }
 
         val view = binding.root

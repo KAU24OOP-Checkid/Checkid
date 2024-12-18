@@ -34,25 +34,19 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        viewModel.loginResult.observe(viewLifecycleOwner) { isLogin ->
+            when (isLogin) {
+                true -> LoginIsSuccessDialogFragment().show(childFragmentManager, "SuccessDialog")
+                false -> LoginIsFailDialogFragment().show(childFragmentManager, "FailDialog")
+                null -> {}
+            }
+        }
+
         binding.LoginButton.setOnClickListener {
             val id = binding.LoginID.text.toString()
             val password = binding.LoginPassword.text.toString()
 
-            lifecycleScope.launch (Dispatchers.IO) {
-                viewModel.login(requireContext(), id, password)
-            }
-
-            lifecycleScope.launch {
-                viewLifecycleOwner.lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
-                    viewModel.loginResult.collect { isLogin ->
-                        if (isLogin) {
-                            LoginIsSuccessDialogFragment().show(childFragmentManager, "SuccessDialog")
-                        } else {
-                            LoginIsFailDialogFragment().show(childFragmentManager, "FailDialog")
-                        }
-                    }
-                }
-            }
+            viewModel.login(requireContext(), id, password)
         }
 
         val view = binding.root

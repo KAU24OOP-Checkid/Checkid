@@ -1,49 +1,48 @@
 package com.example.checkid.viewmodel
 
-import User
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.UserRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel(context: Context) : ViewModel() {
-    private val _loginResult = MutableStateFlow(false)
-    val loginResult: StateFlow<Boolean> get() = _loginResult
+    private val _loginResult = MutableLiveData<Boolean?>(null)
+    val loginResult: LiveData<Boolean?> get() = _loginResult
 
     suspend fun getUserType(context: Context): String {
         return DataStoreManager.getUserType(context)
     }
 
     fun isLogin(context: Context): Boolean {
-        _loginResult.value = DataStoreManager.getIsLogin(context)
-
         return DataStoreManager.getIsLogin(context)
     }
 
-
     fun login(context: Context, id: String, password: String) {
         viewModelScope.launch {
-            val user: User? = UserRepository.getUserByIdAndPassword(id, password)
+            val user = withContext(Dispatchers.IO) {
+                UserRepository.getUserByIdAndPassword(id, password)
+            }
 
             if (user != null) {
                 val userType = UserRepository.getUserType(user) ?: "Child"
 
-                DataStoreManager.setIsLogin(context, true)
-                DataStoreManager.setUserType(context, userType)
-                DataStoreManager.setUserId(context, id)
-                DataStoreManager.setUserPartnerId(context, user.partnerId ?: "")
+                withContext(Dispatchers.IO) {
+                    DataStoreManager.setIsLogin(context, true)
+                    DataStoreManager.setUserType(context, userType)
+                    DataStoreManager.setUserId(context, id)
+                    DataStoreManager.setUserPartnerId(context, user.partnerId ?: "")
+                }
 
-                _loginResult.value = true
-            }
-
-            else {
-                _loginResult.value = false
+                _loginResult.postValue(true)
+            } else {
+                _loginResult.postValue(false)
             }
         }
     }
@@ -54,6 +53,7 @@ class LoginViewModelFactory(private val context: Context) : ViewModelProvider.Fa
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(context) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+
+        throw IllegalArgumentException("Unknown ViewModel class : ${modelClass.name}")
     }
 }
