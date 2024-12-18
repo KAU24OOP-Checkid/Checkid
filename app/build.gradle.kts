@@ -130,6 +130,10 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
+
+    //workmanager depenceny
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
 }
 
 // build.gradle.kts (프로젝트 레벨)

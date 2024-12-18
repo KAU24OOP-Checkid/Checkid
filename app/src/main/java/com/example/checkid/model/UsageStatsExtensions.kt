@@ -1,4 +1,3 @@
-// UsageStatsExtensions.kt
 
 package com.example.checkid
 
