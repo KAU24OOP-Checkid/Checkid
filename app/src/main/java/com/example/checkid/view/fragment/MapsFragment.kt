@@ -79,7 +79,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     /**
      * 위치 데이터가 없을 경우 Firebase에서 가져와 지도에 표시하는 함수
      */
-    private fun fetchChildLocationAndUpdateMap() {
+    private fun fetchChildLocationAndUpdateMap()   {
         val childId = "child1" // 필요에 따라 동적으로 설정
 
         CoroutineScope(Dispatchers.Main).launch {

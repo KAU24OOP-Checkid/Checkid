@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.INTERNET" />
 
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 
     <uses-permission
@@ -18,7 +18,6 @@
         android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:name=".view.Checkid"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,11 +26,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Checkid"
-        tools:targetApi="35">
+        tools:targetApi="31">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCBHCOLBY9rf4XqGblwRjA_zOnc4_TlRl4" />
+
+
+
 
         <activity
             android:name=".view.BaseActivity"
@@ -45,19 +47,23 @@
             </intent-filter>
         </activity>
 
-        <!--ChildActivity -->
+        <!-- ChildActivity -->
         <activity
             android:name=".view.ChildActivity"
             android:exported="true"
             android:theme="@style/Theme.Checkid">
         </activity>
 
-        <!--ParentActivity -->
+        <!-- ParentActivity -->
         <activity
             android:name=".view.ParentActivity"
             android:exported="true"
             android:theme="@style/Theme.Checkid">
         </activity>
 
+
+
+
     </application>
+
 </manifest>

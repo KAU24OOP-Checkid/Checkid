@@ -40,6 +40,4 @@ object NotificationUtils {
         notificationManager.notify(1, notification)
     }
 
-
-
 }

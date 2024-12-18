@@ -1,6 +1,6 @@
 import com.example.checkid.model.UsageStatsAdapter
 
-open class User(
+open class  User(
     val id: String,
     var pw: String,
     var partnerId: String?

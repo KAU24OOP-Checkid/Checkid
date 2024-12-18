@@ -1,62 +1,106 @@
-/*package com.example.checkid.view.fragment
+package com.example.checkid.view.fragment
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceFragmentCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.checkid.R
-import com.example.checkid.service.LocationService
+import com.example.checkid.databinding.FragmentSettingsBinding
+import com.example.checkid.view.dialogFragment.TimeDialogFragment
+import com.example.checkid.viewmodel.SharedViewModel
+import kotlinx.coroutines.launch
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            startLocationService()
-        } else {
-            Toast.makeText(requireContext(), "위치 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var sharedViewModel: SharedViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    // 단일 onViewCreated 메서드로 통합
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentSettingsBinding.bind(view)
+
+        // ViewModel 초기화
+        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+
+        // LiveData 관찰 및 UI 업데이트
+        sharedViewModel.parentUserId.observe(viewLifecycleOwner) { id ->
+            binding.tvAccountInfo.text = "ParentUser ID: $id"
+        }
+
+        sharedViewModel.partnerId.observe(viewLifecycleOwner) { pid ->
+            binding.tvPartnerId.text = "Partner ID: $pid"
+        }
+
+        // Account Info 버튼 클릭 리스너
+        binding.btnAccountInfo.setOnClickListener {
+            lifecycleScope.launch {
+                sharedViewModel.fetchParentUserId()
+            }
+        }
+
+        // Account Connect 버튼 클릭 리스너
+        binding.btnAccountConnect.setOnClickListener {
+            lifecycleScope.launch {
+                sharedViewModel.fetchPartnerId()
+            }
+        }
+
+        // Map Fragment로 이동 버튼 클릭 리스너
+        binding.btnOpenMap.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_mapsFragment)
+        }
+
+        // 시간 설정 버튼 클릭 리스너 설정
+        binding.btnSetTime.setOnClickListener {
+            // TimeDialogFragment 열기
+            val timeDialog = TimeDialogFragment()
+            timeDialog.show(parentFragmentManager, "TimeDialogFragment")
+        }
+
+        // Fragment Result API를 사용하여 TimeDialogFragment로부터 결과 받기
+        childFragmentManager.setFragmentResultListener(
+            TimeDialogFragment.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { requestKey, bundle ->
+            if (requestKey == TimeDialogFragment.REQUEST_KEY) {
+                val selectedHour = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_HOUR)
+                val selectedMinute = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_MINUTE)
+                onTimeSelected(selectedHour, selectedMinute)
+            }
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.setting_preference, rootKey)
+    /**
+     * TimeDialogFragment로부터 시간 선택을 받는 메서드
+     */
+    private fun onTimeSelected(hour: Int, minute: Int) {
+        // 선택된 시간을 문자열로 포맷
+        val selectedTime = String.format("%02d:%02d", hour, minute)
 
-        // 기타 설정...
-
-        checkAndRequestLocationPermission()
+        // UI 업데이트
+        binding.tvSelectedTime.text = "선택된 시간: $selectedTime"
+        Toast.makeText(requireContext(), "시간 설정됨: $selectedTime", Toast.LENGTH_SHORT).show()
     }
 
-    private fun checkAndRequestLocationPermission() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // 권한이 이미 있는 경우 서비스 시작
-                startLocationService()
-            }
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                // 사용자에게 권한 필요성을 설명하고 요청
-                Toast.makeText(requireContext(), "자녀의 위치 추적을 위해 위치 권한이 필요합니다.", Toast.LENGTH_LONG).show()
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-            else -> {
-                // 권한 요청
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-        }
-    }
-
-    private fun startLocationService() {
-        val intent = Intent(requireContext(), LocationService::class.java)
-        ContextCompat.startForegroundService(requireContext(), intent)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
-
-
- */
