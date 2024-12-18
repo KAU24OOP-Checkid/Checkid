@@ -3,33 +3,29 @@ package com.example.checkid.viewmodel
 import User
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.UserRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(context: Context) : ViewModel() {
-    private val _isLogin = MutableLiveData<Boolean>()
-    val isLogin: LiveData<Boolean> get() = _isLogin
+    private val _loginResult = MutableStateFlow(false)
+    val loginResult: StateFlow<Boolean> get() = _loginResult
 
-    init {
-        viewModelScope.launch {
-            _isLogin.value = DataStoreManager.getIsLogin(context)
-        }
-    }
-
-    fun getUserType(context: Context): String {
+    suspend fun getUserType(context: Context): String {
         return DataStoreManager.getUserType(context)
     }
 
     fun isLogin(context: Context): Boolean {
-        _isLogin.value = DataStoreManager.getIsLogin(context)
+        _loginResult.value = DataStoreManager.getIsLogin(context)
 
         return DataStoreManager.getIsLogin(context)
     }
+
 
     fun login(context: Context, id: String, password: String) {
         viewModelScope.launch {
@@ -43,11 +39,11 @@ class LoginViewModel(context: Context) : ViewModel() {
                 DataStoreManager.setUserId(context, id)
                 DataStoreManager.setUserPartnerId(context, user.partnerId ?: "")
 
-                _isLogin.value = true
+                _loginResult.value = true
             }
 
             else {
-                _isLogin.value = false
+                _loginResult.value = false
             }
         }
     }

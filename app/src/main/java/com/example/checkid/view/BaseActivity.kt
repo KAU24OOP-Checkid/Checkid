@@ -15,8 +15,12 @@ import com.example.checkid.view.fragment.PermissionFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
 import com.example.checkid.viewmodel.PermissionViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 open class BaseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBaseBinding
@@ -37,48 +41,74 @@ open class BaseActivity : AppCompatActivity() {
         setContentView(view)
         hideNavigationBar()
 
+        startActivity()
+
+        /*
         lifecycleScope.launch {
-            // login()
-            // permission()
-            startActivity()
+            if (login()) {
+                if (permission()) {
+                    startActivity()
+                }
+            }
         }
+
+         */
     }
 
-    private suspend fun login() {
-        if(!loginViewModel.isLogin(applicationContext)) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun login(): Boolean {
+        if (loginViewModel.isLogin(applicationContext)) {
+            return true
+        }
+
+        return suspendCancellableCoroutine { continuation ->
             replaceFragment(LoginFragment())
 
-            waitUntil {loginViewModel.isLogin(applicationContext)}
+            lifecycleScope.launch {
+                val isLoggedIn = loginViewModel.loginResult.first {it}
+                closeFragment()
+                continuation.resume(true)
+            }
         }
     }
 
-    private suspend fun permission() {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun permission():Boolean {
         if(!permissionViewModel.checkAllPermissions(applicationContext)) {
+            return true
+        }
+
+        return suspendCancellableCoroutine { continuation ->
             replaceFragment(PermissionFragment())
 
-            waitUntil {permissionViewModel.checkAllPermissions(applicationContext)}
+            lifecycleScope.launch {
+                val isGranted = permissionViewModel.permissionResult.first {it}
+                closeFragment()
+                continuation.resume(true)
+            }
         }
     }
 
-    private suspend fun startActivity() {
-        val userType = DataStoreManager.getUserType(applicationContext)
+    private fun startActivity():Boolean {
+        val userType = DataStoreManager.getUserTypeSync(applicationContext)
+
         val intent = when (userType) {
             "Parent" -> Intent(this, ParentActivity::class.java)
             "Child" -> Intent(this, ChildActivity::class.java)
             else -> null
         }
 
-        if (intent != null) {
-            startActivity(intent)
+        intent?.let {
+            startActivity(it)
+            finish() // 현재 Activity 종료
+        } ?: run {
+            // 유저 타입이 비정상적일 경우 로그 또는 처리
+            println("User type is invalid or null")
         }
 
         finish()
-    }
 
-    private suspend fun waitUntil(condition: () -> Boolean) {
-        while (!condition()) {
-            delay(100)
-        }
+        return true
     }
 
     protected fun replaceFragment(fragment: Fragment) : Boolean {
@@ -88,6 +118,12 @@ open class BaseActivity : AppCompatActivity() {
             .commit()
 
         return true
+    }
+
+    private fun closeFragment() {
+        supportFragmentManager.findFragmentById(R.id.activity_base_FragmentContainerView)?.let {
+            supportFragmentManager.beginTransaction().remove(it).commit()
+        }
     }
 
     protected fun hideNavigationBar() {

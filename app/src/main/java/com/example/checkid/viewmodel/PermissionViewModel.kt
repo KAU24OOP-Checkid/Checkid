@@ -5,12 +5,25 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import com.example.checkid.model.PermissionManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class PermissionViewModel: ViewModel() {
+    private val _permissionResult = MutableStateFlow(false)
+    val permissionResult: StateFlow<Boolean> = _permissionResult
+
     fun getAllPermissions() :Array<String> = PermissionManager.getAllPermissions()
 
     fun checkAllPermissions(context: Context): Boolean {
-        return PermissionManager.arePermissionsGranted(context)
+        val allGranted = PermissionManager.arePermissionsGranted(context)
+        _permissionResult.value = allGranted
+
+        return allGranted
+
+    }
+
+    fun updatePermissionGranted() {
+        _permissionResult.value = true
     }
 
     fun openAppSettings(context: Context) {

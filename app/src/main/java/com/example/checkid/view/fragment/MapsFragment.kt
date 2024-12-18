@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.checkid.R
+import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.Location
+import com.example.checkid.model.LocationRepository
 import com.example.checkid.utils.FirebaseHelper
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,9 +31,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            latitude = it.getDouble("latitude", 0.0)
-            longitude = it.getDouble("longitude", 0.0)
+
+        lifecycleScope.launch {
+            val id = DataStoreManager.getUserPartnerId(requireContext())
+            val location = LocationRepository.getLocationById(id)
+
+            if (location != null) {
+                latitude = location.latitude
+                longitude = location.longitude
+            }
         }
     }
 

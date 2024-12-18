@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.checkid.R
 import com.example.checkid.databinding.FragmentLoginBinding
 
@@ -34,21 +35,21 @@ class LoginFragment() : Fragment(R.layout.fragment_login) {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         binding.LoginButton.setOnClickListener {
+            val id = binding.LoginID.text.toString()
+            val password = binding.LoginPassword.text.toString()
+
+            lifecycleScope.launch (Dispatchers.IO) {
+                viewModel.login(requireContext(), id, password)
+            }
+
             lifecycleScope.launch {
-                val id = binding.LoginID.text.toString()
-                val password = binding.LoginPassword.text.toString()
-
-                withContext(Dispatchers.IO) {
-                    viewModel.login(requireContext(), id, password)
-                }
-
-                viewModel.isLogin.observe(viewLifecycleOwner) {isLogin ->
-                    if (isLogin) {
-                        LoginIsSuccessDialogFragment().show(childFragmentManager, "")
-                    }
-
-                    else {
-                        LoginIsFailDialogFragment().show(childFragmentManager, "")
+                viewLifecycleOwner.lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                    viewModel.loginResult.collect { isLogin ->
+                        if (isLogin) {
+                            LoginIsSuccessDialogFragment().show(childFragmentManager, "SuccessDialog")
+                        } else {
+                            LoginIsFailDialogFragment().show(childFragmentManager, "FailDialog")
+                        }
                     }
                 }
             }
