@@ -53,7 +53,7 @@ class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
     }
 
     override fun getItemCount(): Int = usageStatsList.size
-
+/*
     fun updateUsageStats(newStatsList: List<UsageStatsData>) {
         // 제외할 패키지 정의
         val excludedPackages = listOf(
@@ -69,6 +69,25 @@ class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
         }
         notifyDataSetChanged()
     }
+*/
+    private fun filterUsageStats(statsList: List<UsageStatsData>): List<UsageStatsData> {
+        val excludedPackages = listOf(
+            "com.google.android.apps.nexuslauncher",
+            "com.android.systemui",
+            "com.google.android.inputmethod.latin",
+            "com.example.usagestatsmanagerapitest"
+        )
+        return statsList.filter { stats ->
+            stats.packageName !in excludedPackages && stats.totalTimeInForeground > 0
+        }
+    }
+
+    fun updateUsageStats(newStatsList: List<UsageStatsData>) {
+        this.usageStatsList = filterUsageStats(newStatsList)
+        notifyDataSetChanged()
+    }
+
+
 
     inner class UsageStatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIconImageView: ImageView = itemView.findViewById(R.id.appIconImageView)

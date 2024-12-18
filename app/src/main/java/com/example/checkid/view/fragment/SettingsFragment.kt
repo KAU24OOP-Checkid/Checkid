@@ -1,4 +1,4 @@
-/*package com.example.checkid.view.fragment
+package com.example.checkid.view.fragment
 
 import android.Manifest
 import android.content.Intent
@@ -53,10 +53,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun startLocationService() {
-        val intent = Intent(requireContext(), LocationService::class.java)
+       val intent = Intent(requireContext(), LocationService::class.java)
         ContextCompat.startForegroundService(requireContext(), intent)
     }
 }
 
 
- */

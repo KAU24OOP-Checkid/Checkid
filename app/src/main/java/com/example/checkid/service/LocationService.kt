@@ -1,4 +1,4 @@
-/*
+
 package com.example.checkid.service
 
 
@@ -51,4 +51,3 @@ class LocationService : Service() {
         return null
     }
 }
-*/

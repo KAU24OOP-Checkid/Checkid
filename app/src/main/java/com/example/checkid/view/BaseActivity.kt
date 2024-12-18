@@ -38,7 +38,7 @@ open class BaseActivity : AppCompatActivity() {
         hideNavigationBar()
 
         lifecycleScope.launch {
-            login()
+            // login()
             // permission()
             startActivity()
         }
