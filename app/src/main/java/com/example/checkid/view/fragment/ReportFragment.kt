@@ -1,6 +1,4 @@
 package com.example.checkid.view.fragment
-import com.example.checkid.toUsageStatsData
-
 import android.app.usage.UsageStats
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -36,8 +34,8 @@ class ReportFragment : Fragment() {
     ): View {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         setupRecyclerView()
-        setupObservers()
-        reportViewModel.loadUsageStats()
+        setupObservers() // LiveData 관찰 추가
+        reportViewModel.loadUsageStats() // 데이터 로딩
         return binding.root
     }
 
@@ -50,17 +48,20 @@ class ReportFragment : Fragment() {
     }
 
     private fun setupObservers() {
+        // usageStatsList를 관찰하여 UI 업데이트
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
-            val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
-            usageStatsAdapter.updateUsageStats(usageStatsDataList)
-            updateChart(usageStatsList)
+            // RecyclerView와 차트 업데이트
+            usageStatsAdapter.updateUsageStats(usageStatsList)
+            updateChart(usageStatsList) // 차트 갱신
         }
     }
 
-
     private fun updateChart(usageStatsList: List<UsageStats>) {
-        val totalUsage = usageStatsList.sumOf { it.totalTimeInForeground }
-        val entries = usageStatsList.mapIndexed { index, stats ->
+        // UsageStats 데이터를 UsageStatsData로 변환
+        val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
+
+        val totalUsage = usageStatsDataList.sumOf { it.totalTimeInForeground }
+        val entries = usageStatsDataList.mapIndexed { index, stats ->
             val percentage = (stats.totalTimeInForeground.toFloat() / totalUsage) * 100
             BarEntry(index.toFloat(), percentage)
         }
@@ -86,6 +87,7 @@ class ReportFragment : Fragment() {
         _binding = null
     }
 }
+
 
 class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
     RecyclerView.Adapter<UsageStatsAdapter.UsageStatsViewHolder>() {
