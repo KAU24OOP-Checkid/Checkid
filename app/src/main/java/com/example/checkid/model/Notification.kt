@@ -1,7 +1,5 @@
 package com.example.checkid.model
 
-import ParentUser
-import User
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,10 +9,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.checkid.R
-import com.example.checkid.model.NotificationRepository.addNotification
 import com.example.checkid.model.UserRepository.getUserById
-import com.example.checkid.model.UserRepository.isParent
-import com.example.checkid.view.BaseActivity
+import com.example.checkid.view.activity.BaseActivity
 import kotlinx.coroutines.runBlocking
 
 class Notification (

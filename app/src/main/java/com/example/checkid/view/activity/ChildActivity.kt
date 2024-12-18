@@ -1,12 +1,10 @@
-package com.example.checkid.view
+package com.example.checkid.view.activity
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityChildBinding
 import com.example.checkid.view.fragment.AppFragment
-import com.example.checkid.view.fragment.ReportFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.fragment.SettingsFragment
 import com.example.checkid.view.fragment.TestFragment

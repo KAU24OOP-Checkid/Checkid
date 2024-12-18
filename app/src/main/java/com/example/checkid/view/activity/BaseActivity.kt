@@ -1,4 +1,4 @@
-package com.example.checkid.view
+package com.example.checkid.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,7 +18,6 @@ import com.example.checkid.viewmodel.PermissionViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 

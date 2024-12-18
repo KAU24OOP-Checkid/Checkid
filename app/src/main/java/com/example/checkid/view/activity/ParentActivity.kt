@@ -1,4 +1,4 @@
-package com.example.checkid.view
+package com.example.checkid.view.activity
 
 import android.os.Bundle
 
@@ -9,9 +9,6 @@ import com.example.checkid.view.fragment.ReportFragment
 import com.example.checkid.view.fragment.StatisticsFragment
 import com.example.checkid.view.fragment.NotificationFragment
 import com.example.checkid.view.fragment.SettingsFragment
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 
 class ParentActivity : BaseActivity() {
     private lateinit var binding: ActivityParentBinding
