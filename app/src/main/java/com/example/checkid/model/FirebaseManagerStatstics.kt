@@ -8,10 +8,12 @@ import com.google.firebase.firestore.firestore
 
 object FirebaseManagerStatstics {
 
-    private val db = Firebase.firestore
+
 
     // UsageStats 데이터를 ParentUser 또는 ChildUser 문서에 업로드
     fun uploadUsageStats(userId: String, usageStatsList: List<UsageStatsData>) {
+        val db = Firebase.firestore
+
         if (usageStatsList.isNotEmpty()) {
             // 부모/자녀의 Firestore 컬렉션에 업로드
             val userDocRef: DocumentReference = db.collection("users").document(userId)
@@ -24,10 +26,15 @@ object FirebaseManagerStatstics {
         }
     }
 
+
+
+
     // 사용 통계 데이터를 Firestore에서 불러오기
     fun fetchUsageStats(userId: String, callback: (List<UsageStatsData>) -> Unit) {
         // 사용자 Firestore 문서에서 usageStats 가져오기
-        val userDocRef: DocumentReference = db.collection("UsageStats").document(userId)
+        val db = Firebase.firestore
+
+        val userDocRef: DocumentReference = db.collection("users").document(userId)
 
         userDocRef.get()
             .addOnSuccessListener { documentSnapshot ->
