@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.checkid.databinding.FragmentReportBinding
 import com.example.checkid.model.UsageStatsAdapter
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.example.checkid.R
+import kotlinx.coroutines.launch
 
 class ReportFragment : Fragment() {
     private var _binding: FragmentReportBinding? = null
@@ -30,7 +32,11 @@ class ReportFragment : Fragment() {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         setupRecyclerView()
         setupObservers()
-        reportViewModel.loadUsageStats()
+
+        lifecycleScope.launch {
+            reportViewModel.loadUsageStats(requireContext())
+        }
+
         return binding.root
     }
 

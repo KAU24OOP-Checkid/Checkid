@@ -7,22 +7,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.checkid.databinding.FragmentStatisticsBinding
 import com.example.checkid.helper.UsagePermissionHelper
 import com.example.checkid.model.UsageStatsAdapter
 import com.example.checkid.viewmodel.StatisticsViewModel
-import com.example.checkid.manager.FirebaseManager
+import com.example.checkid.model.UsageStatsRepository
 import com.example.checkid.processor.UsageStatisticsProcessor
 import com.example.checkid.model.UsageStatsData
 import com.example.checkid.toUsageStatsData
+import kotlinx.coroutines.launch
 
 class StatisticsFragment : Fragment() {
     private var _binding: FragmentStatisticsBinding? = null
     private val binding get() = _binding!!
     private val statisticsViewModel: StatisticsViewModel by viewModels()
     private lateinit var adapter: UsageStatsAdapter
-    private lateinit var firebaseManager: FirebaseManager
     private lateinit var usageStatisticsProcessor: UsageStatisticsProcessor
 
     override fun onCreateView(
@@ -34,7 +35,6 @@ class StatisticsFragment : Fragment() {
         val view = binding.root
 
         // FirebaseManager 및 UsageStatisticsProcessor 초기화
-        firebaseManager = FirebaseManager(requireContext())
         usageStatisticsProcessor = UsageStatisticsProcessor()
 
         // 권한 확인 및 요청
@@ -60,14 +60,13 @@ class StatisticsFragment : Fragment() {
             // UsageStatsData를 UsageStats로 변환하여 사용
             val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
             showUsageStatistics(usageStatsDataList) // 변환된 데이터로 UI 업데이트
-            firebaseManager.uploadUsageStats(usageStatsDataList) // Firebase 업로드
+
+            lifecycleScope.launch {
+                UsageStatsRepository.uploadUsageStats(requireContext(), usageStatsList)
+            }
+
             adapter.updateUsageStats(usageStatsDataList) // 변환된 데이터로 어댑터 업데이트
         })
-
-        firebaseManager.fetchUsageStats { usageStatsList ->
-            // Firebase에서 받은 데이터는 이미 UsageStats이므로 변환하지 않고 바로 어댑터에 전달
-            adapter.updateUsageStats(usageStatsList)
-        }
     }
 
     private fun showUsageStatistics(usageStatsList: List<UsageStatsData>) {

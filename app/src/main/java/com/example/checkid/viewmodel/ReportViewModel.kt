@@ -3,16 +3,18 @@ package com.example.checkid.viewmodel
 import android.app.Application
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.checkid.model.UsageStatsRepository
 import java.util.*
 
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
     private val _usageStatsList = MutableLiveData<List<UsageStats>>()
     val usageStatsList: LiveData<List<UsageStats>> get() = _usageStatsList
 
-    fun loadUsageStats() {
+    fun loadUsageStats(context: Context) {
         val usageStatsManager = getApplication<Application>().getSystemService(UsageStatsManager::class.java)
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_YEAR, -1)
@@ -24,6 +26,8 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         ).filter { it.totalTimeInForeground > 0 }
 
         _usageStatsList.postValue(statsList)
+
+        UsageStatsRepository.uploadUsageStats(context, statsList)
     }
 }
 
