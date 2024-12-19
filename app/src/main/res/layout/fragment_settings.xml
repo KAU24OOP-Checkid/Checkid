@@ -51,14 +51,17 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:paddingVertical="8dp"
-            android:paddingTop="16dp"/>
+            android:paddingTop="16dp"
+            />
 
         <!-- 시간 설정 버튼 -->
         <Button
             android:id="@+id/btn_set_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="시간 설정" />
+            android:text="시간 설정"
+            android:backgroundTint="@color/Checkid_Yellow"
+            />
 
         <!-- 선택된 시간을 표시할 TextView -->
         <TextView
@@ -74,7 +77,10 @@
             android:id="@+id/btn_account_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="계정 정보" />
+            android:text="계정 정보"
+            android:backgroundTint="@color/Checkid_Yellow"
+            />
+
 
         <!-- Account Connect Button -->
         <Button
@@ -82,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="계정 연결"
+            android:backgroundTint="@color/Checkid_Yellow"
             android:layout_marginTop="16dp" />
 
         <!-- TextView to Display Account Info -->

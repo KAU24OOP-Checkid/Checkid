@@ -1,5 +1,6 @@
 package com.example.checkid.model
 
+import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -14,7 +15,6 @@ object NotificationRepository {
         notifications.add(Notification(NotificationType.REPORT, "2"))
         notifications.add(Notification(NotificationType.WARNING, "3"))
     }
-
      */
 
     private const val COLLECTION = "Notification"
@@ -27,7 +27,8 @@ object NotificationRepository {
     private const val DEFAULT_TEXT_CONTENT = ""
     private const val DEFAULT_TEXT_TITLE = ""
 
-    suspend fun loadNotification(id: String) {
+    suspend fun loadNotification(context: Context) {
+        val id = DataStoreManager.getUserId(context)
         val db = Firebase.firestore
 
         try {

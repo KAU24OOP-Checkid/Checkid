@@ -20,9 +20,7 @@ class NotificationViewModel(context: Context): ViewModel() {
         get() = _notifications
 
     suspend fun loadNotifications(context: Context) {
-        val id = DataStoreManager.getUserId(context)
-
-        NotificationRepository.loadNotification(id)
+        NotificationRepository.loadNotification(context)
         _notifications.value = NotificationRepository.notifications
     }
 

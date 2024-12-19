@@ -136,6 +136,9 @@ dependencies {
 
 }
 
+    // WorkManager 관련 dependency
+    implementation(libs.androidx.work.runtime)
+}
 // build.gradle.kts (프로젝트 레벨)
 
 buildscript {

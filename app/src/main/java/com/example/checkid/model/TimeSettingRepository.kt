@@ -16,18 +16,24 @@ object TimeSettingRepository {
      * @param time "HH:mm" 형식의 시간 문자열
      * @return 저장 성공 여부
      */
-    suspend fun saveTimeSetting(time: String): Boolean {
+    suspend fun saveTimeSetting(id: String, time: String): Boolean {
         val db = FirebaseFirestore.getInstance()
+
         val data = hashMapOf(
             FIELD_TIME to time
         )
 
         return try {
-            // 예를 들어, 모든 팀원이 동일한 시간을 사용한다고 가정하고 하나의 문서를 사용
-            db.collection(COLLECTION).document("shared_time").set(data).await()
+            db.collection(COLLECTION)
+                .document(id)
+                .set(data)
+                .await()
+
             true
+
         } catch (e: Exception) {
             e.printStackTrace()
+
             false
         }
     }
@@ -36,12 +42,15 @@ object TimeSettingRepository {
      * Firestore에서 설정된 시간을 가져옵니다.
      * @return "HH:mm" 형식의 시간 문자열 또는 null
      */
-    suspend fun getTimeSetting(): String? {
+    suspend fun getTimeSetting(id: String): String? {
         val db = FirebaseFirestore.getInstance()
+
         return try {
-            val documentSnapshot = db.collection(COLLECTION).document("shared_time").get().await()
+            val documentSnapshot = db.collection(COLLECTION).document(id).get().await()
+
             if (documentSnapshot.exists()) {
                 documentSnapshot.getString(FIELD_TIME)
+
             } else {
                 null
             }
@@ -50,7 +59,6 @@ object TimeSettingRepository {
             null
         }
     }
-
 
     /**
      * Firestore 실시간 리스너를 통해 시간 설정을 실시간으로 받아옵니다.

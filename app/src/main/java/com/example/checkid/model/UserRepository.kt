@@ -65,7 +65,6 @@ object UserRepository {
         }
     }
 
-
     suspend fun getUserByIdAndPassword(id: String, pw: String): User? {
         val db = Firebase.firestore
 

@@ -1,9 +1,11 @@
 package com.example.checkid.view.activity
 
-import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,8 @@ import com.example.checkid.view.fragment.TestFragment
 import com.example.checkid.viewmodel.LoginViewModel
 import com.example.checkid.viewmodel.LoginViewModelFactory
 import com.example.checkid.viewmodel.PermissionViewModel
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,6 +39,7 @@ open class MainActivity : AppCompatActivity()  {
 
     private val permissionViewModel: PermissionViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,7 +53,7 @@ open class MainActivity : AppCompatActivity()  {
         check()
     }
 
-    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun check() {
         lifecycleScope.launch {
             val isLogin = withContext(Dispatchers.IO) { loginViewModel.isLogin(applicationContext) }
