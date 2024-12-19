@@ -15,7 +15,6 @@ object NotificationRepository {
         notifications.add(Notification(NotificationType.REPORT, "2"))
         notifications.add(Notification(NotificationType.WARNING, "3"))
     }
-
      */
 
     private const val COLLECTION = "Notification"

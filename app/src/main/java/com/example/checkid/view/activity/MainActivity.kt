@@ -1,9 +1,11 @@
 package com.example.checkid.view.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -37,9 +39,10 @@ open class MainActivity : AppCompatActivity()  {
 
     private val permissionViewModel: PermissionViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this) // Firebase 초기화
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val view = binding.root
@@ -48,27 +51,9 @@ open class MainActivity : AppCompatActivity()  {
         hideNavigationBar()
 
         check()
-        listenFirestoreData() // Firestore 실시간 리스너 호출 로그 확인용
-    }
-    // Firestore에서 실시간 데이터 업데이트 확인
-    private fun listenFirestoreData() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("TimeSettings").document("shared_time")
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.e("MainActivity", "Firestore 리스너 오류: ${e.message}")
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    val time = snapshot.getString("selected_time")
-                    Log.d("MainActivity", "Firestore에서 업데이트된 시간: $time")
-                } else {
-                    Log.d("MainActivity", "Firestore 문서가 존재하지 않습니다.")
-                }
-            }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun check() {
         lifecycleScope.launch {
             val isLogin = withContext(Dispatchers.IO) { loginViewModel.isLogin(applicationContext) }
