@@ -16,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.os.Looper
-
 class LocationService : Service() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val TAG = "LocationService"
@@ -45,10 +44,7 @@ class LocationService : Service() {
             }
         }
 
-
-        //런타임 위치 권한을 체크해야함
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-
     }
 
     override fun onBind(intent: Intent?): IBinder? {

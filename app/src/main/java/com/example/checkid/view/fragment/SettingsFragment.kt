@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.checkid.R
@@ -19,9 +16,7 @@ import com.example.checkid.model.TimeSettingRepository
 import com.example.checkid.view.dialogFragment.TimeDialogFragment
 import com.example.checkid.viewmodel.SettingsViewModel
 import com.example.checkid.viewmodel.SettingsViewModelFactory
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -43,8 +38,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        _binding = FragmentSettingsBinding.bind(view)
 
         // LiveData 관찰 및 UI 업데이트
         viewModel.userId.observe(viewLifecycleOwner) { id ->
@@ -71,9 +64,27 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         // Map Fragment로 이동 버튼 클릭 리스너
         binding.btnOpenMap.setOnClickListener {
-           // findNavController().navigate(R.id.action_settingsFragment_to_mapsFragment)
-        }
+            viewModel.fetchChildLocation("child") // Firestore에서 데이터 가져오기
 
+            viewModel.location.observe(viewLifecycleOwner) { location ->
+                if (location != null) {
+                    val mapsFragment = MapsFragment()
+                    val bundle = Bundle().apply {
+                        putDouble("latitude", location.latitude)
+                        putDouble("longitude", location.longitude)
+                    }
+                    mapsFragment.arguments = bundle
+
+                    // FragmentTransaction으로 MapsFragment로 이동
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.activity_main_fragmentContainerView, mapsFragment)
+                        .addToBackStack(null)
+                        .commit()
+                } else {
+                    Toast.makeText(requireContext(), "위치 데이터를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
         // 시간 설정 버튼 클릭 리스너 설정
         binding.btnSetTime.setOnClickListener {
             // TimeDialogFragment 열기
@@ -89,9 +100,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             if (requestKey == TimeDialogFragment.REQUEST_KEY) {
                 val selectedHour = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_HOUR)
                 val selectedMinute = bundle.getInt(TimeDialogFragment.BUNDLE_KEY_MINUTE)
-                Log.d("SettingsFragment", "Result received: Hour=$selectedHour, Minute=$selectedMinute")
+                Log.d(
+                    "SettingsFragment",
+                    "Result received: Hour=$selectedHour, Minute=$selectedMinute"
+                )
                 onTimeSelected(selectedHour, selectedMinute)
-            }else {
+            } else {
                 Log.d("SettingsFragment", "Unexpected requestKey: $requestKey")
             }
         }
@@ -118,7 +132,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

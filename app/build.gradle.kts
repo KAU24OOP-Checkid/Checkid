@@ -130,6 +130,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
+    implementation(libs.firebase.firestore.ktx)
 }
 
 // build.gradle.kts (프로젝트 레벨)
