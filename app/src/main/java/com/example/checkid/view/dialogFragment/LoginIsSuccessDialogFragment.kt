@@ -28,7 +28,7 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
         binding.loginIsSuccessButton.setOnClickListener {
             dismiss()
 
-           // (activity as? MainActivity)?.check()
+            (activity as? MainActivity)?.check()
         }
     }
 

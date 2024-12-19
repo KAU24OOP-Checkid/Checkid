@@ -28,7 +28,7 @@ class PermissionIsSuccessDialogFragment: DialogFragment() {
         binding.permissionIsSuccessButton.setOnClickListener {
             dismiss()
 
-           // (activity as? MainActivity)?.check()
+           (activity as? MainActivity)?.check()
         }
     }
 

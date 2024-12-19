@@ -6,8 +6,11 @@ data class UsageStatsData(
     val packageName: String = "",
     val totalTimeInForeground: Long = 0,
     val lastTimeUsed: Long = 0
+
 )
 
+
+/*
 fun UsageStats.toUsageStatsData(): UsageStatsData {
     return UsageStatsData(
         packageName = this.packageName,
@@ -15,3 +18,5 @@ fun UsageStats.toUsageStatsData(): UsageStatsData {
         lastTimeUsed = this.lastTimeUsed
     )
 }
+
+ */

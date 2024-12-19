@@ -1,5 +1,6 @@
 package com.example.checkid.view.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 
 import com.example.checkid.R
 import com.example.checkid.databinding.ActivityMainBinding
+import com.example.checkid.model.NotificationChannelManager
 import com.example.checkid.view.fragment.AppFragment
 import com.example.checkid.view.fragment.LoginFragment
 import com.example.checkid.view.fragment.NotificationFragment
@@ -46,6 +48,7 @@ open class MainActivity : AppCompatActivity()  {
         check()
     }
 
+    @SuppressLint("NewApi")
     fun check() {
         lifecycleScope.launch {
             val isLogin = withContext(Dispatchers.IO) { loginViewModel.isLogin(applicationContext) }

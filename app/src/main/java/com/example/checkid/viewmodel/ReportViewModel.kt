@@ -10,8 +10,8 @@ import com.example.checkid.model.UsageStatsData
 import java.util.*
 
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
-    private val _usageStatsList = MutableLiveData<List<UsageStatsData>>()
-    val usageStatsList: LiveData<List<UsageStatsData>> get() = _usageStatsList
+    private val _usageStatsList = MutableLiveData<List<UsageStatsData>?>()
+    val usageStatsList: LiveData<List<UsageStatsData>?> get() = _usageStatsList
 
     // UsageStats를 로드하는 메서드
     fun loadUsageStats() {

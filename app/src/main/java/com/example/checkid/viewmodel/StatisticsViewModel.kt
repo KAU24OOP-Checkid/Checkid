@@ -18,7 +18,6 @@ class StatisticsViewModel(
     val fetchedUsageStats: LiveData<List<UsageStatsData>> get() = _fetchedUsageStats
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
 
     // Firebase에서 UsageStats 데이터 가져오기
     fun fetchUsageStats(userId: String) {
@@ -27,11 +26,6 @@ class StatisticsViewModel(
             _isLoading.postValue(false)
             _fetchedUsageStats.postValue(usageStatsList)
         }
-    }
-
-    // WorkManager로 주기적인 작업 예약
-    fun scheduleAppUsageWork() {
-        appUsageWorkManager.scheduleAppUsageWork()
     }
 
 

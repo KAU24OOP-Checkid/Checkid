@@ -1,4 +1,5 @@
 package com.example.checkid.view.fragment
+
 import android.app.usage.UsageStats
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkid.databinding.FragmentReportBinding
 import com.example.checkid.viewmodel.ReportViewModel
+import com.example.checkid.manager.FirebaseManagerStatstics // FirebaseManagerStatstics import 추가
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -48,20 +50,18 @@ class ReportFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // usageStatsList를 관찰하여 UI 업데이트
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
-            // RecyclerView와 차트 업데이트
-            usageStatsAdapter.updateUsageStats(usageStatsList)
-            updateChart(usageStatsList) // 차트 갱신
+            usageStatsList?.let {
+                usageStatsAdapter.updateUsageStats(it)
+                updateChart(it) // 이미 UsageStatsData 타입
+                uploadDataToFirebase(it) // Firebase에 업로드
+            }
         }
     }
 
-    private fun updateChart(usageStatsList: List<UsageStats>) {
-        // UsageStats 데이터를 UsageStatsData로 변환
-        val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
-
-        val totalUsage = usageStatsDataList.sumOf { it.totalTimeInForeground }
-        val entries = usageStatsDataList.mapIndexed { index, stats ->
+    private fun updateChart(usageStatsList: List<UsageStatsData>) {
+        val totalUsage = usageStatsList.sumOf { it.totalTimeInForeground }
+        val entries = usageStatsList.mapIndexed { index, stats ->
             val percentage = (stats.totalTimeInForeground.toFloat() / totalUsage) * 100
             BarEntry(index.toFloat(), percentage)
         }
@@ -82,12 +82,16 @@ class ReportFragment : Fragment() {
         }
     }
 
+    private fun uploadDataToFirebase(usageStatsList: List<UsageStatsData>) {
+        val userId = "userId" // 실제 사용자 ID를 가져오는 방식으로 수정 필요
+        FirebaseManagerStatstics.uploadUsageStats(userId, usageStatsList)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
 
 class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
     RecyclerView.Adapter<UsageStatsAdapter.UsageStatsViewHolder>() {
@@ -147,32 +151,10 @@ class UsageStatsAdapter(private var usageStatsList: List<UsageStatsData>) :
         notifyDataSetChanged()
     }
 
-    private fun filterUsageStats(statsList: List<UsageStatsData>): List<UsageStatsData> {
-        val excludedPackages = listOf(
-            "com.google.android.apps.nexuslauncher",
-            "com.android.systemui",
-            "com.google.android.inputmethod.latin",
-            "com.example.usagestatsmanagerapitest"
-        )
-        return statsList.filter { stats ->
-            stats.packageName !in excludedPackages && stats.totalTimeInForeground > 0
-        }
-    }
-
-
-
     inner class UsageStatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIconImageView: ImageView = itemView.findViewById(R.id.appIconImageView)
         val appNameTextView: TextView = itemView.findViewById(R.id.appNameTextView)
         val lastTimeUsedTextView: TextView = itemView.findViewById(R.id.lastTimeUsedTextView)
         val totalTimeTextView: TextView = itemView.findViewById(R.id.totalTimeTextView)
     }
-}
-
-fun UsageStats.toUsageStatsData(): UsageStatsData {
-    return UsageStatsData(
-        packageName = this.packageName,
-        totalTimeInForeground = this.totalTimeInForeground,
-        lastTimeUsed = this.lastTimeUsed
-    )
 }
