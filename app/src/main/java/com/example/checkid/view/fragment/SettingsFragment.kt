@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.checkid.R
 import com.example.checkid.databinding.FragmentSettingsBinding
+import com.example.checkid.model.DataStoreManager
 import com.example.checkid.model.TimeSettingRepository
 import com.example.checkid.view.dialogFragment.TimeDialogFragment
 import com.example.checkid.viewmodel.SettingsViewModel
@@ -33,6 +34,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+
+        lifecycleScope.launch {
+            val id = DataStoreManager.getUserId(requireContext())
+            val time = TimeSettingRepository.getTimeSetting(id)
+
+            viewModel.updateTime(time)
+        }
+
         return binding.root
     }
 
@@ -40,6 +49,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
 
         // LiveData 관찰 및 UI 업데이트
+        viewModel.time.observe(viewLifecycleOwner) { time ->
+            binding.tvSelectedTime.text = "선택된 시간: $time"
+        }
+
         viewModel.userId.observe(viewLifecycleOwner) { id ->
             binding.tvAccountInfo.text = "My ID: $id"
         }
@@ -124,12 +137,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         // Firestore에 시간 저장
         lifecycleScope.launch {
-            val isSaved = TimeSettingRepository.saveTimeSetting(selectedTime)
-            if (isSaved) {
-                Log.d("SettingsFragment", "시간 데이터 Firestore에 저장 완료")
-            } else {
-                Log.e("SettingsFragment", "시간 데이터 Firestore에 저장 실패")
-            }
+            val isSaved = viewModel.setSelectedTime(requireContext(), selectedTime)
         }
     }
 

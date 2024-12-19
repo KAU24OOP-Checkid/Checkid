@@ -1,9 +1,11 @@
 package com.example.checkid.view.dialogFragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.checkid.databinding.DialogFragmentLoginIsSuccessBinding
 import com.example.checkid.view.activity.MainActivity
@@ -22,6 +24,7 @@ class LoginIsSuccessDialogFragment : DialogFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

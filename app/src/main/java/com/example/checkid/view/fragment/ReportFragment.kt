@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.checkid.databinding.FragmentReportBinding
 import com.example.checkid.model.UsageStatsAdapter
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.example.checkid.R
+import kotlinx.coroutines.launch
 
 class ReportFragment : Fragment() {
     private var _binding: FragmentReportBinding? = null
@@ -29,8 +31,12 @@ class ReportFragment : Fragment() {
     ): View {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         setupRecyclerView()
-        // setupObservers()
-        reportViewModel.loadUsageStats()
+        setupObservers()
+
+        lifecycleScope.launch {
+            reportViewModel.loadUsageStats(requireContext())
+        }
+
         return binding.root
     }
 
@@ -42,7 +48,6 @@ class ReportFragment : Fragment() {
         }
     }
 
-    /*
     private fun setupObservers() {
         reportViewModel.usageStatsList.observe(viewLifecycleOwner) { usageStatsList ->
             val usageStatsDataList = usageStatsList.map { it.toUsageStatsData() }
@@ -51,7 +56,6 @@ class ReportFragment : Fragment() {
         }
     }
 
-     */
 
     private fun updateChart(usageStatsList: List<UsageStats>) {
         val totalUsage = usageStatsList.sumOf { it.totalTimeInForeground }

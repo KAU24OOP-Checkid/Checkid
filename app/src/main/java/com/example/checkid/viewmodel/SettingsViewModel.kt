@@ -19,6 +19,9 @@ class SettingsViewModel(context: Context) : ViewModel() {
     private val _location = MutableLiveData<Location?>()
     val location: LiveData<Location?> get() = _location
 
+    private val _time = MutableLiveData<String?>()
+    val time: LiveData<String?> get() = _time
+
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -34,6 +37,10 @@ class SettingsViewModel(context: Context) : ViewModel() {
 
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String> get() = _userId
+
+    fun updateTime(newTime: String?) {
+        _time.value = newTime
+    }
 
     suspend fun fetchUserId(context: Context) {
         val id = DataStoreManager.getUserId(context)
@@ -64,13 +71,23 @@ class SettingsViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun setSelectedTime(time: String) {
+    fun setSelectedTime(context: Context, time: String) {
         viewModelScope.launch {
+            val id = DataStoreManager.getUserId(context)
             // Firestore에 시간 설정 저장
-            val success = TimeSettingRepository.saveTimeSetting(time)
+            val success = TimeSettingRepository.saveTimeSetting(id, time)
             if (success) {
                 _selectedTime.value = time
             }
+        }
+    }
+
+    fun getSelectedTime(context: Context) {
+        viewModelScope.launch {
+            val id = DataStoreManager.getUserId(context)
+            val time = TimeSettingRepository.getTimeSetting(id)
+
+            _time.postValue(time)
         }
     }
 
@@ -87,7 +104,6 @@ class SettingsViewModel(context: Context) : ViewModel() {
                 } else {
                     _errorMessage.postValue("시간 정보를 불러올 수 없습니다.")
                 }
-
             }
         }
     }

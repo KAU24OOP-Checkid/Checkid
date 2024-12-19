@@ -1,5 +1,7 @@
 package com.example.checkid.model
 
+import ParentUser
+import User
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,9 +11,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.checkid.R
+import com.example.checkid.model.NotificationRepository.addNotification
 import com.example.checkid.model.UserRepository.getUserById
 import com.example.checkid.view.activity.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class Notification (
     val notificationType : NotificationType = NotificationType.SYSTEM,
@@ -25,7 +30,21 @@ class Notification (
         NotificationType.WARNING -> "경고"
         else -> ""
     }
+}
 
+data class NotificationDTO(
+    val notificationType: String = "",
+    val textContent: String = "",
+    val textTitle: String = ""
+)
+
+fun NotificationDTO.toNotification(): Notification {
+    return Notification(
+        notificationType = NotificationType.fromValue(this.notificationType),
+        textContent = this.textContent
+    ).apply {
+        textTitle = this@toNotification.textTitle
+    }
 }
 
 enum class NotificationType(val value: Int) {
@@ -37,6 +56,14 @@ enum class NotificationType(val value: Int) {
     companion object {
         fun fromValue(value: Int): NotificationType {
             return entries.find { it.value == value } ?: SYSTEM
+        }
+
+        fun fromValue(value: String): NotificationType {
+            return when (value) {
+                "REPORT" -> REPORT
+                "WARNING" -> WARNING
+                else -> SYSTEM
+            }
         }
     }
 }
@@ -96,8 +123,12 @@ object NotificationChannelManager {
         }
     }
 
-    fun sendNotification(context: Context, channelId: String, notificationType: NotificationType, textContent: String) {
-        val notification: Notification = Notification(notificationType, textContent)
+    suspend fun sendNotification(context: Context, user: User, notification: Notification) {
+        val channelId: String = if (user is ParentUser) {
+            PARENT_CHANNEL_ID
+        } else  {
+            CHILD_CHANNEL_ID
+        }
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -111,8 +142,6 @@ object NotificationChannelManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // addNotification(notification) // 'viewModelInstance' 는 어떻게 가져오지?
-
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(notification.textTitle)
@@ -122,6 +151,12 @@ object NotificationChannelManager {
             .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(notificationType.ordinal, builder.build())
+        val notificationId = System.currentTimeMillis().toInt()
+
+        notificationManager.notify(notificationId, builder.build())
+
+        withContext(Dispatchers.IO) {
+            addNotification(id = user.id, notification = notification)
+        }
     }
 }

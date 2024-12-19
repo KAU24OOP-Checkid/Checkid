@@ -1,80 +1,84 @@
 package com.example.checkid.model
 
 import android.content.Context
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
 object NotificationRepository {
-    private const val SIZE = 20
+    var notifications = ArrayList<Notification>()
 
-    var notifications = ArrayList<Notification>().apply {
-        add(Notification(NotificationType.REPORT, "1"))
-        add(Notification(NotificationType.WARNING, "2"))
-        add(Notification(NotificationType.SYSTEM, "3"))
-
-        add(Notification(NotificationType.REPORT, "4"))
-        add(Notification(NotificationType.WARNING, "5"))
-        add(Notification(NotificationType.SYSTEM, "6"))
-
-        add(Notification(NotificationType.REPORT, "7"))
-        add(Notification(NotificationType.WARNING, "8"))
-        add(Notification(NotificationType.SYSTEM, "9"))
-
-        add(Notification(NotificationType.REPORT, "10"))
-        add(Notification(NotificationType.WARNING, "11"))
-        add(Notification(NotificationType.SYSTEM, "12"))
+    /*
+    init {
+        notifications.add(Notification(NotificationType.SYSTEM, "1"))
+        notifications.add(Notification(NotificationType.REPORT, "2"))
+        notifications.add(Notification(NotificationType.WARNING, "3"))
     }
+     */
 
-    private const val COLLECTION = "NotificationRepository"
+    private const val COLLECTION = "Notification"
 
     private const val DOCUMENT_NOTIFICATION_TYPE = "notificationType"
     private const val DOCUMENT_TEXT_CONTENT = "textContent"
     private const val DOCUMENT_TEXT_TITLE = "textTitle"
 
-    private const val DEFAULT_NOTIFICATION_TYPE = 0
+    private const val DEFAULT_NOTIFICATION_TYPE = ""
     private const val DEFAULT_TEXT_CONTENT = ""
     private const val DEFAULT_TEXT_TITLE = ""
 
-    suspend fun loadNotification(id: String) {
+    suspend fun loadNotification(context: Context) {
+        val id = DataStoreManager.getUserId(context)
         val db = Firebase.firestore
 
-        // 수정 필요
         try {
-            val querySnapshot = db.collection(COLLECTION).get().await()
+            val documentSnapshot = db.collection(COLLECTION)
+                .document(id)
+                .get()
+                .await()
 
-            for (document in querySnapshot.documents) {
-                val notification = Notification(
-                    notificationType = NotificationType.fromValue(
-                        (document.getLong(DOCUMENT_NOTIFICATION_TYPE)?.toInt() ?: DEFAULT_NOTIFICATION_TYPE)
-                    ),
-                    textContent = document.getString(DOCUMENT_TEXT_CONTENT) ?: DEFAULT_TEXT_CONTENT
-                ).apply {
-                    textTitle = document.getString(DOCUMENT_TEXT_TITLE) ?: DEFAULT_TEXT_TITLE
+            val notificationMaps = documentSnapshot.get("notifications") as? List<Map<String, Any?>> ?: emptyList()
+
+            notifications.clear()
+            notifications.addAll(
+                notificationMaps.map { map ->
+                    NotificationDTO(
+                        notificationType = map[DOCUMENT_NOTIFICATION_TYPE] as? String? ?: DEFAULT_NOTIFICATION_TYPE,
+                        textContent = map[DOCUMENT_TEXT_CONTENT] as? String? ?: DEFAULT_TEXT_CONTENT,
+                        textTitle = map[DOCUMENT_TEXT_TITLE] as? String? ?: DEFAULT_TEXT_TITLE
+                    ).toNotification()
                 }
-            }
+            )
 
         } catch(e: Exception) {
             e.printStackTrace()
         }
     }
 
-    // 수정 필요
-    suspend fun addNotification(notification: Notification, id: String) {
+    suspend fun saveNotification(id: String) {
         val db = Firebase.firestore
-        val notificationData = mapOf(
-            DOCUMENT_NOTIFICATION_TYPE to notification.notificationType,
-            DOCUMENT_TEXT_CONTENT to notification.textContent,
-            DOCUMENT_TEXT_TITLE to notification.textTitle
+
+        val data = mapOf(
+            "notifications" to notifications
         )
 
-        db.collection(COLLECTION)
-            .document(id)
+        try {
+            db.collection(COLLECTION)
+                .document(id)
+                .set(data)
+                .await()
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    suspend fun deleteNotification(index: Int) {
-        val db = Firebase.firestore
+    suspend fun addNotification(id: String, notification: Notification) {
+        notifications.add(notification)
+        saveNotification(id)
+    }
 
+    suspend fun deleteNotification(id: String, index: Int) {
         notifications.removeAt(index)
+        saveNotification(id)
     }
 }
